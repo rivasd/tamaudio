@@ -1,5 +1,6 @@
 function runExperiment(){
 	var prefix;
+	//This is for local testing purposes, we define an "empty" server and other variables used for local purposes.
 	if(typeof serverPsych === "undefined"){
 		serverPsych = {
 			request: function(func){
@@ -8,6 +9,7 @@ function runExperiment(){
 		}
 		prefix = "percept/stimuli/";
 	}else {
+		//this is the prefix when testing on cogmtl server.
 		prefix = "/media/tamaudio/stimuli/";
 	}
 
@@ -16,7 +18,11 @@ function runExperiment(){
     /* create experiment timeline array */
     var timeline = [];
 
-		//cuestionario
+		//Linguistic background questionnaire
+		// partially adapted from the Adult Multilingual Questionnaire (Blume,
+		// Courtney, Urzúa, Yang & Lust, 2010), Unsworth’s (2012) Utrecht Bilingual Language
+		// Exposure Calculator (UBiLEC) and Marian, Blumenfeld & Kaushanskaya’s (2007)
+		// Language Experience and Proficiency Questionnaire (LEAP-Q).
 		var background_questions = {timeline: [{
       type: "form",
 			schema: {
@@ -64,10 +70,12 @@ function runExperiment(){
 	};
 	//timeline.push(background_questions);
 
-		//prueba de nivel
+		//Placement test (part A)
+		//Adapted from DELE (Montrul, 2008)
 		var placement_test = {timeline: [
 			{
 				type: "survey-multi-choice",
+				prompt: "Cada una de las oraciones siguientes contiene un espacio que indica que una palabra o una frase ha sido omitida. A partir de las cuatro posibilidades que se te ofrecen, elige la que mejor completa la oración.",
 				questions: [
 					"1. Al oír del accidente de su buen amigo, Paco se puso __________ .", //1
 					"2. No puedo comprarlo porque me __________ dinero.", //2
@@ -139,6 +147,8 @@ function runExperiment(){
 		]}
 		timeline.push(placement_test);
 
+		//Placement test (part B) - cloze test
+		//Adapted from DELE (Montrul, 2008)
 		var cloze_test = {timeline: [
 			{
 				type: "cloze",
