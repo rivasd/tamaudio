@@ -7,6 +7,9 @@ function runExperiment(){
 				func();
 			}
 		}
+		Percept = {
+			save:function(data){}
+		}
 		prefix = "percept/stimuli/";
 	}else {
 		//this is the prefix when testing on cogmtl server.
@@ -26,46 +29,66 @@ function runExperiment(){
 		var background_questions = {timeline: [{
       type: "form",
 			schema: {
-				form: {form_title : "Cuestionario", layout_color: "grey-300", content_bg_color: "grey-100"},
-				"Nombre" :  {type: "text", required: true},
-				"Edad" :  {type: "text", required: true},
-				"Sexo" :  {type: "radio", labels: ["Hombre", "Mujer"], required: true},
-				"Fecha de nacimiento" :  {type: "date", required: true},
-				"Lugar de nacimiento" :  {type: "text", required: true},
-				"Fecha de llegada a Canadá (si naciste en otro país):" :  {type: "text", required: true},
-				"¿Cuántos años hace que vives en Montreal?" :  {type: "text", required: true},
-				"¿Has vivido en otra ciudad de Canadá o del mundo?" :  {type: "radio", labels:["Sí", "No"], required: true},
+				form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100"},
+				"Nombre" :  {type: "text"},
+				"Edad" :  {type: "text"},
+				"Sexo" :  {type: "radio", labels: ["Hombre", "Mujer"]},
+				"Fecha de nacimiento" :  {type: "date"},
+				"Lugar de nacimiento" :  {type: "text"},
+				"Fecha de llegada a Canadá (si naciste en otro país):" :  {type: "text"},
+				"¿Cuántos años hace que vives en Montreal?" :  {type: "text"},
+				"¿Has vivido en otra ciudad de Canadá o del mundo?" :  {type: "radio", labels:["Sí", "No"]},
 				"¿En cuáles y durante cuánto tiempo?" :  {type: "text"},
 				"Nivel de escolaridad" :  {type: "text"},
-				"Lengua de escolaridad" :  {type: "text", required: true},
-				"País de origen y lengua materna de tu madre" :  {type: "text", required: true},
-				"País de origen y lengua materna de tu padre" :  {type: "text", required: true},
+				"Lengua de escolaridad" :  {type: "text"},
+				"País de origen y lengua materna de tu madre" :  {type: "text"},
+				"País de origen y lengua materna de tu padre" :  {type: "text"},
 				onSubmit: {label: "Continuar"},
 			}
     }, {
 			type: "form",
 			schema: {
-				form: {form_title : "1a lengua", layout_color: "grey-300", content_bg_color: "grey-100"},
-				"Lengua" :  {type: "text", required: true},
-				"Edad" :  {type: "text", required: true},
+				form: {form_title : "1a lengua", layout_color: "grey-600", content_bg_color: "grey-100"},
+				"Lengua" :  {type: "text"},
+				"Edad" :  {type: "text"},
 				onSubmit: {label: "Continuar"},
 			}
 		}, {
 			type: "form",
 			schema: {
 				form: {form_title : "2a lengua", layout_color: "grey-300", content_bg_color: "grey-100"},
-				"Lengua" :  {type: "text", required: true},
-				"Edad" :  {type: "text", required: true},
+				"Lengua" :  {type: "text"},
+				"Edad" :  {type: "text"},
 				onSubmit: {label: "Continuar"}
 			}
 		}, {
 			type: "form",
 			schema: {
 				form: {form_title : "3a lengua", layout_color: "grey-300", content_bg_color: "grey-100"},
-				"Lengua" :  {type: "text", required: true},
-				"Edad" :  {type: "text", required: true},
+				"Lengua" :  {type: "text"},
+				"Edad" :  {type: "text"},
 				onSubmit: {label: "Continuar"},
-			}
+				}
+		}, {
+			type: "form",
+			schema: {
+				form: {form_title : "Actualmente, en qué idioma prefieres ...", layout_color: "grey-300", content_bg_color: "grey-100"},
+				"¿Leer?" :  {type: "text"},
+				"¿Escribir?" :  {type: "text"},
+				"¿Contar (números)?" :  {type: "text"},
+				"¿Discutir sobre temas que te apasionan?" :  {type: "text"},
+				onSubmit: {label: "Continuar"},
+				}
+		}, {
+			type: "form",
+			schema: {
+				form: {form_title : "Nivel de español", layout_color: "grey-300", content_bg_color: "grey-100"},
+				"¿Has recibido clases de o en español?" :  {type: "radio", labels:["Sí", "No"]},
+				"¿Dónde? " :  {type: "text"},
+				"¿Durante qué años?" :  {type: "text"},
+				"¿Con quién hablas español actualmente?" :  {type: "text"},
+				onSubmit: {label: "Continuar"},
+				}
 		}]
 	};
 	//timeline.push(background_questions);
@@ -75,7 +98,7 @@ function runExperiment(){
 		var placement_test = {timeline: [
 			{
 				type: "survey-multi-choice",
-				prompt: "Cada una de las oraciones siguientes contiene un espacio que indica que una palabra o una frase ha sido omitida. A partir de las cuatro posibilidades que se te ofrecen, elige la que mejor completa la oración.",
+				preamble: "<em>Cada una de las oraciones siguientes contiene un espacio que indica que una palabra o una frase ha sido omitida. A partir de las cuatro posibilidades que se te ofrecen, elige la que mejor completa la oración.</em>",
 				questions: [
 					"1. Al oír del accidente de su buen amigo, Paco se puso __________ .", //1
 					"2. No puedo comprarlo porque me __________ dinero.", //2
@@ -141,8 +164,62 @@ function runExperiment(){
 					["hojearlo","ponérselo","conservarlo","repartirlo"], //30
 
 				],
+				 data: {answers : ["desconsolado", //1
+				  								 "falta", //2
+													 "enfermo", //3
+													 "caliente", //4
+													 "ver", //5
+													 "salir de casa", //6
+													 "estrellas", //7
+													 "¿Qué tal?", //8
+													 "ladrar", //9
+													 "despertador", //10
+													 "aceite", //11
+													 "tomamos asiento", //12
+													 "cortarte", //13
+													 "patinar", //14
+													 "fuego", //15
+													 "la noticia que deseaba", //16
+													 "aliviar", //17
+													 "perecer", //18
+													 "darle una limosna", //19
+													 "monedas", //20
+													 "las caricias", //21
+													 "escondérmela", //22
+													 "Dios sabe dónde", //23
+													 "tuviste la culpa", //24
+													 "la cría de reses", //25
+													 "del fallecimiento", //26
+													 "llevarlo a cabo", //27
+													 "los naufragios", //28
+													 "aquel barrio", //29
+													 "repartirlo", //30
+												  ] },
 				 horizontal: true,
-				 button_label: "Enviar mis respuestas"
+				 button_label: "Enviar mis respuestas",
+				 on_finish: function(data){
+					 //correct the test,
+					 var a_responses = jQuery.parseJSON( data.responses );
+					 var numerical_index, response_key;
+					 var a_correct = {};
+					 var total_score = 0;
+					 for(response_key in a_responses){
+						 numerical_index = parseInt(response_key.match(/[0-9]+/)[0]);
+						 if(data.answers[numerical_index] && data.answers[numerical_index] == a_responses[response_key]){
+							 console.log (response_key  + " is correct "  + data.answers[numerical_index]);
+							 total_score++;
+							 a_correct[response_key] = true;
+						 }else{
+							 console.log (response_key  + " is incorrect");
+							 a_correct[response_key] = false;
+						 }
+					 }
+					 jsPsych.data.addDataToLastTrial({correct: a_correct});
+					 jsPsych.data.addDataToLastTrial({score: total_score});
+					//  .each(function(response){
+					// 	 console.log(response);
+					//  })
+				 }
 			}
 		]}
 		timeline.push(placement_test);
@@ -532,7 +609,7 @@ function runExperiment(){
         }],
         choices: [13]};
 
-      timeline.push(test_block);
+      //timeline.push(test_block);
     }
 
 
@@ -541,7 +618,7 @@ function runExperiment(){
 			//pass timeline var here.
 			timeline: timeline,
 			on_finish:function(data){
-        //jsPsych.data.displayData();
+        jsPsych.data.displayData();
 
 				Percept.save({
 					data:data
