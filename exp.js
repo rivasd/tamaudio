@@ -22,7 +22,7 @@ function runExperiment(){
 
 		var languages = [];
 		var language_levels = ['Muy mal', 'Mal','Regular','Bien', 'Muy bien', 'Excelente'];
-		var language_order_name = ['Primera lengua', 'Segunda lengua', 'Tercera lengua'];
+		var language_order_name = ['Primera lengua', 'Segunda lengua', 'Tercera lengua', 'Cuarta lengua', 'Quinta lengua', 'Sexta lengua'];
 
 		function getCurrentLanguages(){
 			return languages;
@@ -30,6 +30,17 @@ function runExperiment(){
 
 		function getLanguageLevels(){
 			return language_levels;
+		}
+
+		function getLanguage(i){
+			if(languages[i])return languages[i];
+			else return 'N/A';
+		}
+
+		function isLanguageDisabled(i){
+			console.log(languages[i]);
+			if(languages[i])return false;
+			else return true;
 		}
 
     /* create experiment timeline array */
@@ -47,7 +58,7 @@ function runExperiment(){
 		background_questions.timeline.push({
 			type: "form",
 			schema: {
-				form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100",	form_description: ' '},
+				form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: ' '},
 				"name" :  {type: "text", label: " ", question:"Nombre"},
 				"Edad" :  {type: "text", label: " "},
 				"Sexo" :  {type: "radio", labels: ["Hombre", "Mujer"]},
@@ -68,22 +79,43 @@ function runExperiment(){
 		var language_tabs_form = {
 			type: "form",
 			schema: {
-				form: {form_title : "Lenguas aprendidas", form_description:"¿Qué lenguas aprendiste cuando eras niño? ¿A qué edad? ¿Dónde y con quién las hablabas?", layout_color: "grey-300", content_bg_color: "grey-100", use_data_key:true},
-				"languages": {type: 'tab', schema:[]},
-				onSubmit: {label: "Continuar", onclick: function(){}}
+				form: {form_title : "Lenguas aprendidas", form_description:"¿Qué lenguas aprendiste cuando eras niño? ¿A qué edad? ¿Dónde y con quién las hablabas?", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg", use_data_key:true},
+				"languages": {type: 'tab', schema:[], add_tab : function(e){
+					//Find next index
+					var i = e.srcElement.parentElement.parentElement.parentElement.querySelectorAll('.mdl-tabs__panel').length+1;
+					if(i > 6) {
+						alert('You have entered enough languages.')
+						return false;
+					}
+					var new_tab_schema = {
+						tab: {tab_title: language_order_name[i-1], id: 'language_' + (i) + '_tab', use_data_key:true},
+						["language_"+i] :  {type: "text", label: " ", question: language_order_name[i-1], required:true, errorInfo:"Por favor, entra un idioma"},
+						["language_"+(i)+"_start"] :  {type: "radio", labels:["Nacimiento", "Después"], question:"¿Desde cuándo?"},
+						["language_"+(i)+"_age"] :  {type: "text", label: "Dejar vacío si desde el 'nacimiento'", question:"¿Desde qué edad?"},
+						["language_"+(i)+"_where"] :  {type: "radio", labels:["Casa", "Guardería", "Otro lugar"], question:"¿Dónde la hablabas?"},
+						["language_"+(i)+"_who"] :  {type: "radio", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?"},
+					}
+
+					jsPsych.currentTrial().ref.appendTab(new_tab_schema, 'tab_0', 0);
+				}},
+				onSubmit: {label: "Continuar"}
 			},on_finish: function(data) {
-				if(data['language_1'])languages.push(data['language_1']);
-				if(data['language_2'])languages.push(data['language_2']);
-				if(data['language_3'])languages.push(data['language_3']);
+				var i = 1;
+				while(data['language_' + i]){
+					languages.push(data['language_' + i++]);
+				}
+				// if(data['language_1'])languages.push(data['language_1']);
+				// if(data['language_2'])languages.push(data['language_2']);
+				// if(data['language_3'])languages.push(data['language_3']);
 			}
 		}
 
 	  for(var i=1; i <= 3; i++){
 	 		language_tabs_form.schema.languages.schema.push({
 				tab: {tab_title: language_order_name[i-1], id: 'language_' + (i) + '_tab'},
-				["language_"+i] :  {type: "text", label: " ", question:"Lengua"},
+				["language_"+i] :  {type: "text", label: " ", question: language_order_name[i-1], required:true, errorInfo:"Por favor, entra un idioma"},
 				["language_"+(i)+"_start"] :  {type: "radio", labels:["Nacimiento", "Después"], question:"¿Desde cuándo?"},
-				["language_"+(i)+"_age"] :  {type: "text", label: "Dejar vacío si has selecionado 'nacimiento'", question:"¿Desde qué edad?"},
+				["language_"+(i)+"_age"] :  {type: "text", label: "Dejar vacío si desde el 'nacimiento'", question:"¿Desde qué edad?"},
 				["language_"+(i)+"_where"] :  {type: "radio", labels:["Casa", "Guardería", "Otro lugar"], question:"¿Dónde la hablabas?"},
 				["language_"+(i)+"_who"] :  {type: "radio", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?"},
 			});
@@ -93,7 +125,7 @@ function runExperiment(){
 		background_questions.timeline.push({
 			type: "form",
 			schema: {
-				form: {form_title : "Uso de la lengua", form_description:"Actualmente, en qué idioma prefieres ...", layout_color: "grey-300", content_bg_color: "grey-100"},
+				form: {form_title : "Uso de la lengua", form_description:"Actualmente, en qué idioma prefieres ...", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg"},
 				"¿Leer?" :  {type: "dropdown", options: getCurrentLanguages, choose_prompt: 'Elige un idioma'},
 				"¿Escribir?" :  {type: "dropdown", options: getCurrentLanguages, choose_prompt: 'Elige un idioma'},
 				"¿Contar (números)?" :  {type: "dropdown", options: getCurrentLanguages, choose_prompt: 'Elige un idioma'},
@@ -104,7 +136,7 @@ function runExperiment(){
 		background_questions.timeline.push({
 			type: "form",
 			schema: {
-				form: {form_title : "Nivel de español", form_description: '', layout_color: "grey-300", content_bg_color: "grey-100"},
+				form: {form_title : "Nivel de español", form_description: '', layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg"},
 				"¿Has recibido clases de o en español?" :  {type: "radio", labels:["Sí", "No"]},
 				"¿Dónde? " :  {type: "text", label: " "},
 				"¿Durante qué años?" :  {type: "text", label: " "},
@@ -116,10 +148,13 @@ function runExperiment(){
 		background_questions.timeline.push({
 			type: "form",
 			schema: {
-				form: {form_title : "Dominio de los idiomas", form_description: 'En tu opinión, ¿cómo dominas los idiomas que has aprendido?', layout_color: "grey-300", content_bg_color: "grey-100"},
-				"language_1_level" :  {type: "radio", labels: language_levels, question: function(){return languages[0]}},
-				"language_2_level" :  {type: "radio", labels: language_levels, question: function(){return languages[1]}},
-				"language_3_level" :  {type: "radio", labels: language_levels, question: function(){return languages[2]}},
+				form: {form_title : "Dominio de los idiomas", form_description: 'En tu opinión, ¿cómo dominas los idiomas que has aprendido?', layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg"},
+				"language_1_level" :  {type: "radio", labels: language_levels, question: function(){return getLanguage(0)}, },
+				"language_2_level" :  {type: "radio", labels: language_levels, question: function(){return getLanguage(1)}, disabled:function(){return isLanguageDisabled(1)}},
+				"language_3_level" :  {type: "radio", labels: language_levels, question: function(){return getLanguage(2)}, disabled:function(){return isLanguageDisabled(2)}},
+				"language_4_level" :  {type: "radio", labels: language_levels, question: function(){return getLanguage(3)}, disabled:function(){return isLanguageDisabled(3)}},
+				"language_5_level" :  {type: "radio", labels: language_levels, question: function(){return getLanguage(4)}, disabled:function(){return isLanguageDisabled(4)}},
+				"language_6_level" :  {type: "radio", labels: language_levels, question: function(){return getLanguage(5)}, disabled:function(){return isLanguageDisabled(5)}},
 				onSubmit: {label: "Continuar"},
 			}
 		});
@@ -136,7 +171,7 @@ function runExperiment(){
 		});
 
 
-	timeline.push(background_questions);
+		timeline.push(background_questions);
 
 		//Placement test (part A)
 		//Adapted from DELE (Montrul, 2008)
@@ -334,11 +369,13 @@ function runExperiment(){
             "<li>2: podría ser dicha por un hablante nativo = la 2da frase combina perfectamente bien con la 1ra.</li>" +
             "<li>0: No sé (por favor, evite esta respuesta dentro de lo posible)</li>" +
             "</ul>" +
+						"Vas a oir cada oración dos veces con una pausa de 2 secundos entre cada vez." +
             "</p>",
       timing_post_trial: 2000,
       choices: [13]
     };
-    //timeline.push(instructions_block);
+
+    timeline.push(instructions_block);
 
 		// Here we define the stimuli for the GJT
 		// From this list, we later build a timeline

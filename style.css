@@ -1,3 +1,16 @@
 #jspsych-survey-multi-choice-form, .jspsych-survey-multi-choice-text{
   text-align: left;
 }
+
+.jspsych-cloze-stimulus, #jspsych-survey-multi-choice-form{
+  max-width: 840px;
+  margin:auto;
+}
+ .jspsych-content-wrapper{
+   justify-content:flex-start;
+ }
+ .jspsych-content{
+   text-align: left;
+   margin: inherit;
+   width:95%;
+ }
