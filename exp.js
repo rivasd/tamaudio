@@ -18,6 +18,20 @@ function runExperiment(){
 
 	serverPsych.request(function (settings){
 
+
+
+		var languages = [];
+		var language_levels = ['Muy mal', 'Mal','Regular','Bien', 'Muy bien', 'Excelente'];
+		var language_order_name = ['Primera lengua', 'Segunda lengua', 'Tercera lengua'];
+
+		function getCurrentLanguages(){
+			return languages;
+		};
+
+		function getLanguageLevels(){
+			return language_levels;
+		}
+
     /* create experiment timeline array */
     var timeline = [];
 
@@ -26,72 +40,103 @@ function runExperiment(){
 		// Courtney, Urzúa, Yang & Lust, 2010), Unsworth’s (2012) Utrecht Bilingual Language
 		// Exposure Calculator (UBiLEC) and Marian, Blumenfeld & Kaushanskaya’s (2007)
 		// Language Experience and Proficiency Questionnaire (LEAP-Q).
-		var background_questions = {timeline: [{
-      type: "form",
+		var background_questions = {
+			timeline: []
+		}
+
+		background_questions.timeline.push({
+			type: "form",
 			schema: {
-				form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100"},
-				"Nombre" :  {type: "text"},
-				"Edad" :  {type: "text"},
+				form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100",	form_description: ' '},
+				"name" :  {type: "text", label: " ", question:"Nombre"},
+				"Edad" :  {type: "text", label: " "},
 				"Sexo" :  {type: "radio", labels: ["Hombre", "Mujer"]},
-				"Fecha de nacimiento" :  {type: "date"},
-				"Lugar de nacimiento" :  {type: "text"},
-				"Fecha de llegada a Canadá (si naciste en otro país):" :  {type: "text"},
-				"¿Cuántos años hace que vives en Montreal?" :  {type: "text"},
+				"Fecha de nacimiento" :  {type: "date", label: " "},
+				"Lugar de nacimiento" :  {type: "text", label: " "},
+				"Fecha de llegada a Canadá (si naciste en otro país):" :  {type: "text", label: " "},
+				"¿Cuántos años hace que vives en Montreal?" :  {type: "number", label: " "},
 				"¿Has vivido en otra ciudad de Canadá o del mundo?" :  {type: "radio", labels:["Sí", "No"]},
-				"¿En cuáles y durante cuánto tiempo?" :  {type: "text"},
-				"Nivel de escolaridad" :  {type: "text"},
-				"Lengua de escolaridad" :  {type: "text"},
-				"País de origen y lengua materna de tu madre" :  {type: "text"},
-				"País de origen y lengua materna de tu padre" :  {type: "text"},
+				"¿En cuáles y durante cuánto tiempo?" :  {type: "text", label: " "},
+				"Nivel de escolaridad" :  {type: "text", label: "Secundaria, licenciatura, máster, etc."},
+				"Lengua de escolaridad" :  {type: "text", label: "Lengua principal de enseñanza"},
+				"País de origen y lengua materna de tu madre" :  {type: "text", label: " "},
+				"País de origen y lengua materna de tu padre" :  {type: "text", label: " "},
+				onSubmit: {label: "Continuar", onclick: function(){}}
+			}
+		});
+
+		var language_tabs_form = {
+			type: "form",
+			schema: {
+				form: {form_title : "Lenguas aprendidas", form_description:"¿Qué lenguas aprendiste cuando eras niño? ¿A qué edad? ¿Dónde y con quién las hablabas?", layout_color: "grey-300", content_bg_color: "grey-100", use_data_key:true},
+				"languages": {type: 'tab', schema:[]},
+				onSubmit: {label: "Continuar", onclick: function(){}}
+			},on_finish: function(data) {
+				if(data['language_1'])languages.push(data['language_1']);
+				if(data['language_2'])languages.push(data['language_2']);
+				if(data['language_3'])languages.push(data['language_3']);
+			}
+		}
+
+	  for(var i=1; i <= 3; i++){
+	 		language_tabs_form.schema.languages.schema.push({
+				tab: {tab_title: language_order_name[i-1], id: 'language_' + (i) + '_tab'},
+				["language_"+i] :  {type: "text", label: " ", question:"Lengua"},
+				["language_"+(i)+"_start"] :  {type: "radio", labels:["Nacimiento", "Después"], question:"¿Desde cuándo?"},
+				["language_"+(i)+"_age"] :  {type: "text", label: "Dejar vacío si has selecionado 'nacimiento'", question:"¿Desde qué edad?"},
+				["language_"+(i)+"_where"] :  {type: "radio", labels:["Casa", "Guardería", "Otro lugar"], question:"¿Dónde la hablabas?"},
+				["language_"+(i)+"_who"] :  {type: "radio", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?"},
+			});
+		}
+		background_questions.timeline.push(language_tabs_form);
+
+		background_questions.timeline.push({
+			type: "form",
+			schema: {
+				form: {form_title : "Uso de la lengua", form_description:"Actualmente, en qué idioma prefieres ...", layout_color: "grey-300", content_bg_color: "grey-100"},
+				"¿Leer?" :  {type: "dropdown", options: getCurrentLanguages, choose_prompt: 'Elige un idioma'},
+				"¿Escribir?" :  {type: "dropdown", options: getCurrentLanguages, choose_prompt: 'Elige un idioma'},
+				"¿Contar (números)?" :  {type: "dropdown", options: getCurrentLanguages, choose_prompt: 'Elige un idioma'},
+				"¿Discutir sobre temas que te apasionan?" :  {type: "dropdown", options: getCurrentLanguages, choose_prompt: 'Elige un idioma'},
 				onSubmit: {label: "Continuar"},
 			}
-    }, {
+		});
+		background_questions.timeline.push({
 			type: "form",
 			schema: {
-				form: {form_title : "1a lengua", layout_color: "grey-600", content_bg_color: "grey-100"},
-				"Lengua" :  {type: "text"},
-				"Edad" :  {type: "text"},
-				onSubmit: {label: "Continuar"},
-			}
-		}, {
-			type: "form",
-			schema: {
-				form: {form_title : "2a lengua", layout_color: "grey-300", content_bg_color: "grey-100"},
-				"Lengua" :  {type: "text"},
-				"Edad" :  {type: "text"},
-				onSubmit: {label: "Continuar"}
-			}
-		}, {
-			type: "form",
-			schema: {
-				form: {form_title : "3a lengua", layout_color: "grey-300", content_bg_color: "grey-100"},
-				"Lengua" :  {type: "text"},
-				"Edad" :  {type: "text"},
-				onSubmit: {label: "Continuar"},
-				}
-		}, {
-			type: "form",
-			schema: {
-				form: {form_title : "Actualmente, en qué idioma prefieres ...", layout_color: "grey-300", content_bg_color: "grey-100"},
-				"¿Leer?" :  {type: "text"},
-				"¿Escribir?" :  {type: "text"},
-				"¿Contar (números)?" :  {type: "text"},
-				"¿Discutir sobre temas que te apasionan?" :  {type: "text"},
-				onSubmit: {label: "Continuar"},
-				}
-		}, {
-			type: "form",
-			schema: {
-				form: {form_title : "Nivel de español", layout_color: "grey-300", content_bg_color: "grey-100"},
+				form: {form_title : "Nivel de español", form_description: '', layout_color: "grey-300", content_bg_color: "grey-100"},
 				"¿Has recibido clases de o en español?" :  {type: "radio", labels:["Sí", "No"]},
-				"¿Dónde? " :  {type: "text"},
-				"¿Durante qué años?" :  {type: "text"},
-				"¿Con quién hablas español actualmente?" :  {type: "text"},
+				"¿Dónde? " :  {type: "text", label: " "},
+				"¿Durante qué años?" :  {type: "text", label: " "},
+				"¿Con quién hablas español actualmente?" :  {type: "text", label: " "},
 				onSubmit: {label: "Continuar"},
-				}
-		}]
-	};
-	//timeline.push(background_questions);
+			}
+		});
+		//Dominio de los idiomas
+		background_questions.timeline.push({
+			type: "form",
+			schema: {
+				form: {form_title : "Dominio de los idiomas", form_description: 'En tu opinión, ¿cómo dominas los idiomas que has aprendido?', layout_color: "grey-300", content_bg_color: "grey-100"},
+				"language_1_level" :  {type: "radio", labels: language_levels, question: function(){return languages[0]}},
+				"language_2_level" :  {type: "radio", labels: language_levels, question: function(){return languages[1]}},
+				"language_3_level" :  {type: "radio", labels: language_levels, question: function(){return languages[2]}},
+				onSubmit: {label: "Continuar"},
+			}
+		});
+		//Idiomas en la actualidad
+
+		//Comentario
+		background_questions.timeline.push({
+			type: "form",
+			schema: {
+				form: {form_title : "Comentarios", form_description: '¿Tienes algún comentario o información adicional que crees que podría ser útil para este estudio?', layout_color: "grey-300", content_bg_color: "grey-100"},
+				"Comentarios" :  {type: "textarea", question: 'Comentarios', label:"Escribe aquí tus comentarios"},
+ 				onSubmit: {label: "Continuar"},
+			}
+		});
+
+
+	timeline.push(background_questions);
 
 		//Placement test (part A)
 		//Adapted from DELE (Montrul, 2008)
@@ -206,11 +251,11 @@ function runExperiment(){
 					 for(response_key in a_responses){
 						 numerical_index = parseInt(response_key.match(/[0-9]+/)[0]);
 						 if(data.answers[numerical_index] && data.answers[numerical_index] == a_responses[response_key]){
-							 console.log (response_key  + " is correct "  + data.answers[numerical_index]);
+							 //console.log (response_key  + " is correct "  + data.answers[numerical_index]);
 							 total_score++;
 							 a_correct[response_key] = true;
 						 }else{
-							 console.log (response_key  + " is incorrect");
+							 //console.log (response_key  + " is incorrect");
 							 a_correct[response_key] = false;
 						 }
 					 }
@@ -609,7 +654,7 @@ function runExperiment(){
         }],
         choices: [13]};
 
-      //timeline.push(test_block);
+      timeline.push(test_block);
     }
 
 
