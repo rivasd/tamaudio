@@ -80,13 +80,8 @@ function runExperiment(){
 			type: "form",
 			schema: {
 				form: {form_title : "Lenguas aprendidas", form_description:"¿Qué lenguas aprendiste cuando eras niño? ¿A qué edad? ¿Dónde y con quién las hablabas?", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg", use_data_key:true},
-				"languages": {type: 'tab', schema:[], add_tab : function(e){
+				"languages": {type: 'tab', schema:[], add_tab : function(i){
 					//Find next index
-					var i = e.srcElement.parentElement.parentElement.parentElement.querySelectorAll('.mdl-tabs__panel').length+1;
-					if(i > 6) {
-						alert('You have entered enough languages.')
-						return false;
-					}
 					var new_tab_schema = {
 						tab: {tab_title: language_order_name[i-1], id: 'language_' + (i) + '_tab', use_data_key:true},
 						["language_"+i] :  {type: "text", label: " ", question: language_order_name[i-1], required:true, errorInfo:"Por favor, entra un idioma"},
@@ -95,9 +90,8 @@ function runExperiment(){
 						["language_"+(i)+"_where"] :  {type: "radio", labels:["Casa", "Guardería", "Otro lugar"], question:"¿Dónde la hablabas?"},
 						["language_"+(i)+"_who"] :  {type: "radio", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?"},
 					}
-
-					jsPsych.currentTrial().ref.appendTab(new_tab_schema, 'tab_0', 0);
-				}},
+					return new_tab_schema;
+				}, max_tabs:6, message_max_tabs: 'You have entered enough languages.'},
 				onSubmit: {label: "Continuar"}
 			},on_finish: function(data) {
 				var i = 1;
