@@ -329,7 +329,7 @@ function runExperiment(){
 							"que el centro acoja a unos 150.000 visitantes al año. Los responsables esperan que la institución funcione a ${total~=pleno~entero} "+ //19
 							"rendimiento a principios de la ${=siguiente~próxima~pasada} semana, "+ //20
 							"si bien el catálogo completo de las obras de la Fundación Pilar y Joan Miró no estará listo hasta dentro de dos años.</p>",
-				 submit_text: "Enviar mis respuestas"
+				 button_label: "Enviar mis respuestas"
 				},
 			]}
 		timeline.push(cloze_test);
