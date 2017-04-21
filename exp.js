@@ -87,8 +87,8 @@ function runExperiment(){
 						["language_"+i] :  {type: "text", label: " ", question: language_order_name[i-1], required:true, errorInfo:"Por favor, entra un idioma"},
 						["language_"+(i)+"_start"] :  {type: "radio", labels:["Nacimiento", "Después"], question:"¿Desde cuándo?"},
 						["language_"+(i)+"_age"] :  {type: "text", label: "Dejar vacío si desde el 'nacimiento'", question:"¿Desde qué edad?"},
-						["language_"+(i)+"_where"] :  {type: "radio", labels:["Casa", "Guardería", "Otro lugar"], question:"¿Dónde la hablabas?"},
-						["language_"+(i)+"_who"] :  {type: "radio", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?"},
+						["language_"+(i)+"_where"] :  {type: "checkbox", labels:["Casa", "Guardería", "Otro lugar"], question:"¿Dónde la hablabas?"},
+						["language_"+(i)+"_who"] :  {type: "checkbox", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?"},
 					}
 					return new_tab_schema;
 				}, max_tabs:6, message_max_tabs: 'You have entered enough languages.'},
@@ -110,8 +110,8 @@ function runExperiment(){
 				["language_"+i] :  {type: "text", label: " ", question: language_order_name[i-1], required:true, errorInfo:"Por favor, entra un idioma"},
 				["language_"+(i)+"_start"] :  {type: "radio", labels:["Nacimiento", "Después"], question:"¿Desde cuándo?"},
 				["language_"+(i)+"_age"] :  {type: "text", label: "Dejar vacío si desde el 'nacimiento'", question:"¿Desde qué edad?"},
-				["language_"+(i)+"_where"] :  {type: "radio", labels:["Casa", "Guardería", "Otro lugar"], question:"¿Dónde la hablabas?"},
-				["language_"+(i)+"_who"] :  {type: "radio", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?"},
+				["language_"+(i)+"_where"] :  {type: "checkbox", labels:["Casa", "Guardería", "Otro lugar"], question:"¿Dónde la hablabas?"},
+				["language_"+(i)+"_who"] :  {type: "checkbox", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?"},
 			});
 		}
 		background_questions.timeline.push(language_tabs_form);
@@ -357,13 +357,13 @@ function runExperiment(){
             "En otras palabras, indica si la combinación de frases puede haber sido dicha por un hablante nativo del español. " +
             "Para ello, debes utilizar la escala que se te ofrece. Esta escala contiene cinco números de -2 a +2, los cuales corresponden a las siguientes respuestas:<br/>" +
             "<ul style=''>" +
-            "<li>-2: no podría ser dicha por un hablante nativo = la 2da frase no combina bien en absoluto con la 1ra.</li>" +
-            "<li>-1: creo que no podría ser dicha por un hablante nativo = la 2da frase no combina bien con la 1ra.</li>" +
-            "<li>1: creo que podría ser dicha por un hablante nativo = la 2da frase combina bien con la 1ra.</li>" +
-            "<li>2: podría ser dicha por un hablante nativo = la 2da frase combina perfectamente bien con la 1ra.</li>" +
+            "<li>-2: no podría ser dicha por un hablante nativo</li>" +
+            "<li>-1: creo que no podría ser dicha por un hablante nativo</li>" +
+            "<li>1: creo que podría ser dicha por un hablante nativo</li>" +
+            "<li>2: podría ser dicha por un hablante nativo</li>" +
             "<li>0: No sé (por favor, evite esta respuesta dentro de lo posible)</li>" +
             "</ul>" +
-						"Vas a oir cada oración dos veces con una pausa de 2 secundos entre cada vez." +
+						"Vas a oír cada oración dos veces con una pausa de 2 secundos entre cada vez." +
             "</p>",
       timing_post_trial: 2000,
       choices: [13]
@@ -596,15 +596,6 @@ function runExperiment(){
 		    response: "no-go",
 		    audio: "stim-49.mp3"
 		  },
-		  { text: "Miguel prefiere jugar al fútbol que al tenis. Es que el fútbol es un deporte más divertido. ",
-		    response: "go",
-		    audio: "stim-48.mp3"
-		  },
-		  { text: "Tengo que alquilar una camioneta que carga hasta 1000 kilogramos, pero no existe ninguna así.   ",
-		    correct: ["Tengo que alquilar una camioneta que cargue hasta 1000 kilogramos, pero no existe ninguna así.  "],
-		    response: "no-go",
-		    audio: "stim-49.mp3"
-		  },
 		  { text: "Miguel busca un negocio que venda muebles antiguos. Le han dicho que en la capital podrá encontrar alguno.   ",
 		    response: "go",
 		    audio: "stim-50.mp3"
@@ -667,7 +658,7 @@ function runExperiment(){
           timeline : [
             {
               type: "survey-text",
-              preamble: '¿La frase no te parece correcta? Corríjela: ',
+              preamble: '¿La frase no te parece correcta? Corrígela: ',
               questions: [stimuli[i].text],
               values: [stimuli[i].text],
               rows: [2],
