@@ -115,7 +115,7 @@ function runExperiment(){
 			schema: {
 				form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: ' '},
 				"name" :  {type: "text", label: " ", question:"Nombre", required: true, errorInfo:"* Respuesta obligatoria"},
-				"email" :  {type: "email", label: " ", question:"Correo electrónico", required: true, errorInfo:"* Correo electrónico válido obligatoria"},
+				"email" :  {type: "email", label: " ", question:"Correo electrónico", required: true, errorInfo:"* Correo electrónico válido obligatorio"},
 				"Sexo" :  {type: "radio", labels: ["Hombre", "Mujer"], required: true, errorInfo:"* Respuesta obligatoria"},
 				"Fecha de nacimiento" :  {type: "date", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
 				"Lugar de nacimiento" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
@@ -365,7 +365,7 @@ function runExperiment(){
 				type: "cloze",
 				text: "<p><em>En el siguiente texto, algunas palabras han sido sustituidas por listas de opciones. " +
 								"Primero, lee el texto completo para poder entenderlo. Después, vuelve a leerlo y elige en las listas de opciones " +
-								"la palabra que mejor corresponde a cada oración. Para confirmar tus respuestas al final del texto, pulsa el botón 'Enviar mis resuestas' </em></p>"+
+								"la palabra que mejor corresponde a cada oración. Para confirmar tus respuestas al final del texto, pulsa el botón 'Enviar mis respuestas' </em></p>"+
 								"<h3>El sueño de Joan Miro</h3>" +
 							"<p>Hoy se inaugura en Palma de Mallorca la Fundación Pilar y Joan Miró, en el mismo lugar en donde el artista vivió sus últimos treinta y cinco años. " +
 							"El sueño de Joan Miró se ha ${=cumplido~completado~terminado}.  " + //1
