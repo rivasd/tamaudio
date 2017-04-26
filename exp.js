@@ -110,26 +110,26 @@ function runExperiment(){
 
 
 
-		background_questions.timeline.push({
-			type: "form",
-			schema: {
-				form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: ' '},
-				"name" :  {type: "text", label: " ", question:"Nombre", required: true, errorInfo:"* Respuesta obligatoria"},
-				"email" :  {type: "email", label: " ", question:"Correo electrónico", required: true, errorInfo:"* Respuesta obligatoria"},
-				"Sexo" :  {type: "radio", labels: ["Hombre", "Mujer"], required: true, errorInfo:"* Respuesta obligatoria"},
-				"Fecha de nacimiento" :  {type: "date", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-				"Lugar de nacimiento" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-				"Fecha de llegada a Canadá (si naciste en otro país):" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-				"¿Cuántos años hace que vives en Montreal?" :  {type: "number", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-				"¿Has vivido en otra ciudad de Canadá o del mundo?" :  {type: "radio", labels:["Sí", "No"], required: true, errorInfo:"* Respuesta obligatoria"},
-				"¿En cuáles y durante cuánto tiempo?" :  {type: "text", label: " ", required: true},
-				"Nivel de escolaridad" :  {type: "text", label: "Secundaria, licenciatura, máster, etc.", required: true, errorInfo:"* Respuesta obligatoria"},
-				"Lengua de escolaridad" :  {type: "text", label: "Lengua principal de enseñanza", required: true, errorInfo:"* Respuesta obligatoria"},
-				"País de origen y lengua materna de tu madre" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-				"País de origen y lengua materna de tu padre" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-				onSubmit: {label: "Continuar", onclick: function(){}}
-			}
-		});
+		// background_questions.timeline.push({
+		// 	type: "form",
+		// 	schema: {
+		// 		form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: ' '},
+		// 		"name" :  {type: "text", label: " ", question:"Nombre", required: true, errorInfo:"* Respuesta obligatoria"},
+		// 		"email" :  {type: "email", label: " ", question:"Correo electrónico", required: true, errorInfo:"* Correo electrónico válido obligatoria"},
+		// 		"Sexo" :  {type: "radio", labels: ["Hombre", "Mujer"], required: true, errorInfo:"* Respuesta obligatoria"},
+		// 		"Fecha de nacimiento" :  {type: "date", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+		// 		"Lugar de nacimiento" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+		// 		"Fecha de llegada a Canadá (si naciste en otro país):" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+		// 		"¿Cuántos años hace que vives en Montreal?" :  {type: "number", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+		// 		"¿Has vivido en otra ciudad de Canadá o del mundo?" :  {type: "radio", labels:["Sí", "No"], required: true, errorInfo:"* Respuesta obligatoria"},
+		// 		"¿En cuáles y durante cuánto tiempo?" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria (puedes escribir <em>Ninguna</em>)"},
+		// 		"Nivel de escolaridad" :  {type: "text", label: "Secundaria, licenciatura, máster, etc.", required: true, errorInfo:"* Respuesta obligatoria"},
+		// 		"Lengua de escolaridad" :  {type: "text", label: "Lengua principal de enseñanza", required: true, errorInfo:"* Respuesta obligatoria"},
+		// 		"País de origen y lengua materna de tu madre" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+		// 		"País de origen y lengua materna de tu padre" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+		// 		onSubmit: {label: "Continuar", onclick: function(){}}
+		// 	}
+		// });
 
 		var language_tabs_form = {
 			type: "form",
@@ -140,8 +140,8 @@ function runExperiment(){
 					var new_tab_schema = {
 						tab: {tab_title: language_order_name[i-1], id: 'language_' + (i) + '_tab', use_data_key:true},
 						["language_"+i] :  {type: "text", label: " ", question: language_order_name[i-1], required:true, errorInfo:"Por favor, entra un idioma", required: true, errorInfo:"* Respuesta obligatoria"},
-						["language_"+(i)+"_start"] :  {type: "radio", labels:["Nacimiento", "Después"], question:"¿Desde cuándo?"},
-						["language_"+(i)+"_age"] :  {type: "text", label: "Dejar vacío si desde el 'nacimiento'", question:"¿Desde qué edad?", required: true, errorInfo:"* Respuesta obligatoria"},
+						["language_"+(i)+"_start"] :  {type: "radio", labels:["Nacimiento", "Después"], question:"¿Desde cuándo?", required: true, errorInfo:"* Respuesta obligatoria"},
+						["language_"+(i)+"_age"] :  {type: "text", label: "Escribir 0 si desde el 'nacimiento'", question:"¿Desde qué edad?", required: true, errorInfo:"* Respuesta obligatoria (puedes escribir 0)"},
 						["language_"+(i)+"_where"] :  {type: "checkbox", labels:["Casa", "Guardería", "Otro lugar"], question:"¿Dónde la hablabas?", required: true, errorInfo:"* Respuesta obligatoria"},
 						["language_"+(i)+"_who"] :  {type: "checkbox", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?", required: true, errorInfo:"* Respuesta obligatoria"},
 					}
@@ -167,7 +167,7 @@ function runExperiment(){
 				tab: {tab_title: language_order_name[i-1], id: 'language_' + (i) + '_tab'},
 				["language_"+i] :  {type: "text", label: " ", question:language_order_name[i-1], required:true, errorInfo:"Por favor, entra un idioma"},
 				["language_"+(i)+"_start"] :  {type: "radio", labels:["Nacimiento", "Después"], question:"¿Desde cuándo?", required: true, errorInfo:"* Respuesta obligatoria"},
-				["language_"+(i)+"_age"] :  {type: "text", label: "Dejar vacío si desde el 'nacimiento'", question:"¿Desde qué edad?"},
+				["language_"+(i)+"_age"] :  {type: "text", label: "Escribir 0 si desde el 'nacimiento'", question:"¿Desde qué edad?", required: true, errorInfo:"* Respuesta obligatoria (puedes escribir 0)"},
 				["language_"+(i)+"_where"] :  {type: "checkbox", labels:["Casa", "Guardería", "Otro lugar"], question:"¿Dónde la hablabas?", required: true, errorInfo:"* Respuesta obligatoria"},
 				["language_"+(i)+"_who"] :  {type: "checkbox", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?", required: true, errorInfo:"* Respuesta obligatoria"},
 			});
