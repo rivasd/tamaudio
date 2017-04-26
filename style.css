@@ -2,7 +2,7 @@
   text-align: left;
 }
 
-.jspsych-cloze-stimulus, #jspsych-survey-multi-choice-form{
+.jspsych-cloze-stimulus, #jspsych-survey-multi-choice-form, .jspsych-prompt, #jspsych-survey-likert-form, #jspsych-survey-text-form, .jspsych-survey-text-preamble{
   max-width: 840px;
   margin:auto;
 }
