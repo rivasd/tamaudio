@@ -92,7 +92,7 @@ function runExperiment(){
 			type: "form",
 			schema: {
 				form: {form_title : "TAM audio", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: 'Si ya se te ha asignado un código, escríbelo aquí y continúa. Si no lo tienes, solo presiona continuar.', use_data_key: true},
-				"code" :  {type: "text", label: " ", question:"Código", value:"N01"},
+				"code" :  {type: "text", label: " ", question:"Código", value:""},
 				onSubmit: {label: "Continuar", onclick: function(){
 					console.log(jsPsych.currentTimelineNodeID());
 				}},
@@ -110,26 +110,26 @@ function runExperiment(){
 
 
 
-		// background_questions.timeline.push({
-		// 	type: "form",
-		// 	schema: {
-		// 		form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: ' '},
-		// 		"name" :  {type: "text", label: " ", question:"Nombre", required: true, errorInfo:"* Respuesta obligatoria"},
-		// 		"email" :  {type: "email", label: " ", question:"Correo electrónico", required: true, errorInfo:"* Correo electrónico válido obligatoria"},
-		// 		"Sexo" :  {type: "radio", labels: ["Hombre", "Mujer"], required: true, errorInfo:"* Respuesta obligatoria"},
-		// 		"Fecha de nacimiento" :  {type: "date", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-		// 		"Lugar de nacimiento" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-		// 		"Fecha de llegada a Canadá (si naciste en otro país):" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-		// 		"¿Cuántos años hace que vives en Montreal?" :  {type: "number", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-		// 		"¿Has vivido en otra ciudad de Canadá o del mundo?" :  {type: "radio", labels:["Sí", "No"], required: true, errorInfo:"* Respuesta obligatoria"},
-		// 		"¿En cuáles y durante cuánto tiempo?" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria (puedes escribir <em>Ninguna</em>)"},
-		// 		"Nivel de escolaridad" :  {type: "text", label: "Secundaria, licenciatura, máster, etc.", required: true, errorInfo:"* Respuesta obligatoria"},
-		// 		"Lengua de escolaridad" :  {type: "text", label: "Lengua principal de enseñanza", required: true, errorInfo:"* Respuesta obligatoria"},
-		// 		"País de origen y lengua materna de tu madre" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-		// 		"País de origen y lengua materna de tu padre" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-		// 		onSubmit: {label: "Continuar", onclick: function(){}}
-		// 	}
-		// });
+		background_questions.timeline.push({
+			type: "form",
+			schema: {
+				form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: ' '},
+				"name" :  {type: "text", label: " ", question:"Nombre", required: true, errorInfo:"* Respuesta obligatoria"},
+				"email" :  {type: "email", label: " ", question:"Correo electrónico", required: true, errorInfo:"* Correo electrónico válido obligatoria"},
+				"Sexo" :  {type: "radio", labels: ["Hombre", "Mujer"], required: true, errorInfo:"* Respuesta obligatoria"},
+				"Fecha de nacimiento" :  {type: "date", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+				"Lugar de nacimiento" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+				"Fecha de llegada a Canadá (si naciste en otro país):" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+				"¿Cuántos años hace que vives en Montreal?" :  {type: "number", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+				"¿Has vivido en otra ciudad de Canadá o del mundo?" :  {type: "radio", labels:["Sí", "No"], required: true, errorInfo:"* Respuesta obligatoria"},
+				"¿En cuáles y durante cuánto tiempo?" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria (puedes escribir <em>Ninguna</em>)"},
+				"Nivel de escolaridad" :  {type: "text", label: "Secundaria, licenciatura, máster, etc.", required: true, errorInfo:"* Respuesta obligatoria"},
+				"Lengua de escolaridad" :  {type: "text", label: "Lengua principal de enseñanza", required: true, errorInfo:"* Respuesta obligatoria"},
+				"País de origen y lengua materna de tu madre" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+				"País de origen y lengua materna de tu padre" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+				onSubmit: {label: "Continuar", onclick: function(){}}
+			}
+		});
 
 		var language_tabs_form = {
 			type: "form",
@@ -416,9 +416,8 @@ function runExperiment(){
     var instructions_block = {
       type: "single-audio",
       stimulus: prefix + "instrucciones.mp3",
-      prompt: "<div class='jspsych-prompt'><p>En esta prueba vas a oír varias frases. Escúchalas y decide en cada caso si " +
-            " pueden haber sido dichas por un hablante nativo del español (no tengas en cuenta la pronunciación). " +
-            "Debes utilizar la escala que se te ofrece. Esta escala contiene cinco números de -2 a 2, los cuales corresponden a las siguientes respuestas:<br/>" +
+      prompt: "<div class='jspsych-prompt'><p>En esta prueba vas a oír varias frases. Escúchalas y decide en cada caso si pueden haber sido dichas por un hablante nativo del español.</p>" +
+            "<p>Debes utilizar la escala que se te ofrece. Esta escala contiene cinco números de -2 a 2, los cuales corresponden a las siguientes respuestas: </p>" +
             "<ul style=''>" +
             "<li>-2: estoy seguro de que no podría ser dicha por un hablante nativo</li>" +
             "<li>-1: creo que no podría ser dicha por un hablante nativo</li>" +
@@ -426,8 +425,10 @@ function runExperiment(){
             "<li>2: estoy seguro de que podría ser dicha por un hablante nativo</li>" +
             "<li>0: no sé (por favor, evita esta respuesta dentro de lo posible)</li>" +
             "</ul>" +
-						"Vas a oír cada frase dos veces antes de responder." +
-            "</p></div>",
+						"<p>Cada vez que marques -2 o -1 en la escala, la frase aparecerá en pantalla. Por favor, corrígela para que parezca haber sido dicha por un hablante nativo.</p> " +
+						"<p>Vas a oír cada frase dos veces antes de responder. Es importante que sigas tu primer impulso al contestar, entonces, responde rápidamente.  </p> " +
+						"<p>Ahora presiona cualquier tecla para continuar.</p> " +
+            "</div>",
       timing_post_trial: 2000,
       choices: [13]
     };
