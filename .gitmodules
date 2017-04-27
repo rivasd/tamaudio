@@ -1,3 +1,7 @@
 [submodule "mdl"]
 	path = mdl
 	url = git@github.com:google/material-design-lite.git
+[submodule "jsPsych"]
+	path = jsPsych
+	url = git://github.com/hugueslacroix/jsPsych.git
+	branch = improve-form-plugin
