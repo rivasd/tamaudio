@@ -119,7 +119,7 @@ function runExperiment(){
 				"sex" :  {type: "radio", labels: ["Hombre", "Mujer"], question:"Sexo", required: true, errorInfo:"* Respuesta obligatoria"},
 				"birth_date" :  {type: "date", label:' ', question: "Fecha de nacimiento", required: true, errorInfo:"* Respuesta obligatoria"},
 				"birth_place" :  {type: "text", label:" ", question: "Lugar de nacimiento", required: true, errorInfo:"* Respuesta obligatoria"},
-				"arrival_canada" :  {type: "text", label: " ", question : "Fecha de llegada a Canadá", required: true, errorInfo:"* Respuesta obligatoria o <em>NA</em>", tooltip: "Si naciste en Canadá, puedes escribe <em>NA</em>."},
+				"arrival_canada" :  {type: "text", label: " ", question : "Fecha de llegada a Canadá", required: true, errorInfo:"* Respuesta obligatoria o <em>NA</em>", tooltip: "Si naciste en Canadá, escribe <em>NA</em>."},
 				"years_montreal" :  {type: "text", label: " ", question:'¿Cuántos años hace que vives en Montreal?', required: true, errorInfo:"* Respuesta obligatoria", tooltip: "Si naciste en Montreal, escribe tu edad."},
 				"otras_ciudades" :  {type: "radio", labels:["Sí", "No"], question: "¿Has vivido en otra ciudad de Canadá o del mundo?", required: true, errorInfo:"* Respuesta obligatoria"},
 				"otras_ciudades_details" :  {type: "textarea", placeholder: "Ejemplo : Toronto, 2 años <br/>Beijing, 3 meses", question: "¿En cuáles y durante cuánto tiempo?", required: true, errorInfo:"* Respuesta obligatoria (puedes escribir <em>Ninguna</em>)", cols:60},
