@@ -92,7 +92,7 @@ function runExperiment(){
 			type: "form",
 			schema: {
 				form: {form_title : "TAM audio", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: 'Si ya se te ha asignado un código, escríbelo aquí y continúa. Si no lo tienes, solo presiona continuar.', use_data_key: true},
-				"code" :  {type: "text", label: " ", question:"Código", value:""},
+				"code" :  {type: "text", label: "Código", needQuestion:false, floating:true, value:""},
 				onSubmit: {label: "Continuar", onclick: function(){
 					console.log(jsPsych.currentTimelineNodeID());
 				}},
@@ -114,19 +114,19 @@ function runExperiment(){
 			type: "form",
 			schema: {
 				form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: ' '},
-				"name" :  {type: "text", label: " ", question:"Nombre", required: true, errorInfo:"* Respuesta obligatoria"},
-				"email" :  {type: "email", label: " ", question:"Correo electrónico", required: true, errorInfo:"* Correo electrónico válido obligatorio"},
-				"Sexo" :  {type: "radio", labels: ["Hombre", "Mujer"], required: true, errorInfo:"* Respuesta obligatoria"},
-				"Fecha de nacimiento" :  {type: "date", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-				"Lugar de nacimiento" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-				"Fecha de llegada a Canadá (si naciste en otro país):" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-				"¿Cuántos años hace que vives en Montreal?" :  {type: "number", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-				"¿Has vivido en otra ciudad de Canadá o del mundo?" :  {type: "radio", labels:["Sí", "No"], required: true, errorInfo:"* Respuesta obligatoria"},
-				"¿En cuáles y durante cuánto tiempo?" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria (puedes escribir <em>Ninguna</em>)"},
-				"Nivel de escolaridad" :  {type: "text", label: "Secundaria, licenciatura, máster, etc.", required: true, errorInfo:"* Respuesta obligatoria"},
-				"Lengua de escolaridad" :  {type: "text", label: "Lengua principal de enseñanza", required: true, errorInfo:"* Respuesta obligatoria"},
-				"País de origen y lengua materna de tu madre" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
-				"País de origen y lengua materna de tu padre" :  {type: "text", label: " ", required: true, errorInfo:"* Respuesta obligatoria"},
+				"name" :  {type: "text", label: " ", question: "Nombre", required: true, errorInfo:"* Respuesta obligatoria"},
+				"email" :  {type: "email", label: " ", question: "Correo electrónico", required: true, errorInfo:"* Correo electrónico válido obligatorio"},
+				"sex" :  {type: "radio", labels: ["Hombre", "Mujer"], question:"Sexo", required: true, errorInfo:"* Respuesta obligatoria"},
+				"birth_date" :  {type: "date", label:' ', question: "Fecha de nacimiento", required: true, errorInfo:"* Respuesta obligatoria"},
+				"birth_place" :  {type: "text", label:" ", question: "Lugar de nacimiento", required: true, errorInfo:"* Respuesta obligatoria"},
+				"arrival_canada" :  {type: "text", label: " ", question : "Fecha de llegada a Canadá", required: true, errorInfo:"* Respuesta obligatoria o <em>NA</em>", tooltip: "Si naciste en Canadá, puedes escribe <em>NA</em>."},
+				"years_montreal" :  {type: "text", label: " ", question:'¿Cuántos años hace que vives en Montreal?', required: true, errorInfo:"* Respuesta obligatoria", tooltip: "Si naciste en Montreal, escribe tu edad."},
+				"otras_ciudades" :  {type: "radio", labels:["Sí", "No"], question: "¿Has vivido en otra ciudad de Canadá o del mundo?", required: true, errorInfo:"* Respuesta obligatoria"},
+				"otras_ciudades_details" :  {type: "textarea", placeholder: "Ejemplo : Toronto, 2 años <br/>Beijing, 3 meses", question: "¿En cuáles y durante cuánto tiempo?", required: true, errorInfo:"* Respuesta obligatoria (puedes escribir <em>Ninguna</em>)", cols:60},
+				"school_level" :  {type: "text", label: "Secundaria, licenciatura, máster, etc.", question: "Nivel de escolaridad", required: true, errorInfo:"* Respuesta obligatoria"},
+				"school_language" :  {type: "text", label: "Lengua principal de enseñanza", question:"Lengua de escolaridad", required: true, errorInfo:"* Respuesta obligatoria"},
+				"origin_mother" :  {type: "text", label: " ", question:"País de origen y lengua materna de tu madre", required: true, errorInfo:"* Respuesta obligatoria"},
+				"origin_father" :  {type: "text", label: " ", question:"País de origen y lengua materna de tu padre", required: true, errorInfo:"* Respuesta obligatoria"},
 				onSubmit: {label: "Continuar", onclick: function(){}}
 			}
 		});
@@ -146,7 +146,7 @@ function runExperiment(){
 						["language_"+(i)+"_who"] :  {type: "checkbox", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?", required: true, errorInfo:"* Respuesta obligatoria"},
 					}
 					return new_tab_schema;
-				}, min_tabs:2, max_tabs:6, message_max_tabs: 'Has entrado el número máximo de lenguas.', remove_tab:{button_label:'Borrar esta lengua'}},
+				}, min_tabs:1, max_tabs:6, message_max_tabs: 'Has entrado el número máximo de lenguas.', remove_tab:{button_label:'Suprimir esta lengua'}},
 				onSubmit: {label: "Continuar"}
 			},on_finish: function(data) {
 				var i = 1;
@@ -162,7 +162,7 @@ function runExperiment(){
 			}
 		}
 
-	  for(var i=1; i <= 3; i++){
+	  for(var i=1; i <= 2; i++){
 	 		language_tabs_form.schema.languages.schema.push({
 				tab: {tab_title: language_order_name[i-1], id: 'language_' + (i) + '_tab'},
 				["language_"+i] :  {type: "text", label: " ", question:language_order_name[i-1], required:true, errorInfo:"Por favor, entra un idioma"},
@@ -217,7 +217,7 @@ function runExperiment(){
 			type: "form",
 			schema: {
 				form: {form_title : "Comentarios", form_description: '¿Tienes algún comentario o información adicional que crees que podría ser útil para este estudio?', layout_color: "grey-300", content_bg_color: "grey-100"},
-				"Comentarios" :  {type: "textarea", question: 'Comentarios', label:"Escribe aquí tus comentarios"},
+				"Comentarios" :  {type: "textarea", question: 'Comentarios', placeholder:"Escribe aquí tus comentarios"},
  				onSubmit: {label: "Continuar"},
 			}
 		});
@@ -430,7 +430,6 @@ function runExperiment(){
 						"<p>Ahora presiona cualquier tecla para continuar.</p> " +
             "</div>",
       timing_post_trial: 2000,
-      choices: [13]
     };
 
     timeline.push(instructions_block);
@@ -708,6 +707,8 @@ function runExperiment(){
           labels : [['-2 (no nativo)', '-1', '0', '1', '2 (nativo)']],
           data: {"response" : stimuli[i].response},
           button_label : "Confirmar",
+					required: true,
+					oninvalid:"Tienes que elegir un valor en la escala, si no estás seguro, puedes seleccionar 0.",
           on_finish: function(data){
             var correct = false;
             if(data.response == 'go' && data.rt > -1 && jQuery.parseJSON( data.responses ).Q0 > 2){
