@@ -691,7 +691,7 @@ function runExperiment(){
 		]
 
     var test_block;
-    for(var i = 0; i < 1/*stimuli.length*/; i++){
+    for(var i = 0; i < stimuli.length; i++){
       test_block = {timeline: [
 				{
           type: "single-audio",
