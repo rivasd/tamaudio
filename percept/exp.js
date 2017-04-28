@@ -429,7 +429,7 @@ function runExperiment(){
 						"<p>Vas a oír cada frase dos veces antes de responder. Es importante que sigas tu primer impulso al contestar, entonces, responde rápidamente.  </p> " +
 						"<p>Ahora presiona cualquier tecla para continuar.</p> " +
             "</div>",
-      timing_post_trial: 2000,
+      timing_post_trial: 0,
     };
 
     timeline.push(instructions_block);
@@ -705,7 +705,7 @@ function runExperiment(){
           type: "survey-likert",
           questions: ['¿Qué te ha parecido?'],
           labels : [['-2 (no nativo)', '-1', '0', '1', '2 (nativo)']],
-          data: {"response" : stimuli[i].response},
+          data: {"response" : stimuli[i].response, 'item_id':i},
           button_label : "Confirmar",
 					required: true,
 					oninvalid:"Tienes que elegir un valor en la escala, si no estás seguro, puedes seleccionar 0.",
@@ -716,7 +716,7 @@ function runExperiment(){
             } else if(data.response == 'no-go' && data.rt > -1 && jQuery.parseJSON( data.responses ).Q0 < 2){
               correct = true;
             }
-            jsPsych.data.addDataToLastTrial({correct: correct});
+            jsPsych.data.addDataToLastTrial({correct: correct, likert: jQuery.parseJSON( data.responses ).Q0});
           },
         },
         {
@@ -729,7 +729,18 @@ function runExperiment(){
               rows: [2],
               columns: [120],
               button_label : "Confirmar",
-              data: {'response': stimuli[i].response ? stimuli[i].response : []},
+              data: {'answer': stimuli[i].correct ? stimuli[i].correct : [], 'item_id':i},
+							on_finish: function(data){
+								var data = jsPsych.data.getLastTrialData().first().values()[0]
+								var answer =  jQuery.parseJSON(data.responses).Q0;
+								var correct = false;
+								for(i in data.answer){
+									if(answer.trim() == data.answer[i].trim()){
+										correct = true;
+									}
+								}
+		            jsPsych.data.addDataToLastTrial({correct: correct, response: answer});
+		          },
             }],
           conditional_function: function(){
             var data = jsPsych.data.getLastTrialData().first().values()[0];
@@ -750,8 +761,8 @@ function runExperiment(){
 			//pass timeline var here.
 			timeline: timeline,
 			on_finish:function(data){
-        jsPsych.data.displayData();
-
+        //jsPsych.data.displayData('');
+				jsPsych.data.get().localSave('CSV', 'mydata.csv');
 				Percept.save({
 					data:data
 				})
