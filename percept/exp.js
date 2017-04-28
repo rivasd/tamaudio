@@ -8,7 +8,13 @@ function runExperiment(){
 			}
 		}
 		Percept = {
-			save:function(data){}
+			save:function(data){
+				$.ajax({
+			    url: 'server/save.php',
+			    data : {data:  data.data.csv(), filename:data.data.first().values()[0].code, group:data.group},
+			    type: 'POST'
+			  });
+			}
 		}
 		prefix = "percept/stimuli/";
 	}else {
@@ -23,7 +29,7 @@ function runExperiment(){
 		var languages = [];
 		var language_levels = ['Muy mal', 'Mal','Regular','Bien', 'Muy bien', 'Excelente'];
 		var language_order_name = ['Primera lengua', 'Segunda lengua', 'Tercera lengua', 'Cuarta lengua', 'Quinta lengua', 'Sexta lengua'];
-
+		var currentGroup;
 		function getCurrentLanguages(){
 			return languages;
 		};
@@ -62,7 +68,7 @@ function runExperiment(){
 					group = 'L2';
 				}
 			}
-			console.log(group);
+			return group;
 		}
 
 		function isLanguageDisabled(i){
@@ -155,7 +161,7 @@ function runExperiment(){
 				}
 
 				//Assign a group to this user
-				assignGroup(data);
+				currentGroup = assignGroup(data);
 				// if(data['language_1'])languages.push(data['language_1']);
 				// if(data['language_2'])languages.push(data['language_2']);
 				// if(data['language_3'])languages.push(data['language_3']);
@@ -685,7 +691,7 @@ function runExperiment(){
 		]
 
     var test_block;
-    for(var i = 0; i < stimuli.length; i++){
+    for(var i = 0; i < 1/*stimuli.length*/; i++){
       test_block = {timeline: [
 				{
           type: "single-audio",
@@ -762,9 +768,13 @@ function runExperiment(){
 			timeline: timeline,
 			on_finish:function(data){
         //jsPsych.data.displayData('');
-				jsPsych.data.get().localSave('CSV', 'mydata.csv');
+				//jsPsych.data.get().localSave('CSV', 'mydata.csv');
+				//data = data.getDataAsCSV([{trial_type: 'form'}, {trial_type: 'survey-multi-choice'}, {trial_type: 'cloze'}, {trial_type: 'survey-likert'}, {trial_type: 'survey-text'}]);
+
+
 				Percept.save({
-					data:data
+					data:data,
+					group:currentGroup
 				})
 			},
 			display_element: 'jsPsychTarget',
