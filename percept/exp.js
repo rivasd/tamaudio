@@ -444,6 +444,122 @@ function runExperiment(){
 		// From this list, we later build a timeline
 		// Stimuli and timeline are defined separately to avoid repeating large amount of code.
 		// Go and no-go are arbitraty value for "Good" or "Bad".
+
+		var practice = [
+			{ text: "Pedro y Elena estuvieron cansados durante cuatro años. Se divorciaron la semana pasada.",
+				correct: ["Pedro y Elena estuvieron casados durante cuatro años. Se divorciaron la semana pasada."],
+		    response: "no-go",
+		    audio: "prac-01.mp3",
+				feedback_negative: "Tenías que reemplazar la palabra 'cansados' por 'casados'",
+				feedback_positive: "¡Muy bien!, continuamos con otro item de práctica."
+		  },
+			{ text: "Mis amigos tienen un examen muy difícil mañana, por eso han ido hoy a estudiar a la biblioteca.",
+		    response: "go",
+		    audio: "prac-02.mp3",
+				feedback_negative: "En esta frase, no había nada que corregir.",
+				feedback_positive: "¡Muy bien!, continuamos con otro item de práctica."
+		  },
+			{ text: "Los niños buscan una pelota que se les haya perdido. ¿No la has visto?",
+				correct: ["Los niños buscan una pelota que se les ha perdido. ¿No la has visto?"],
+		    response: "no-go",
+		    audio: "prac-03.mp3",
+				feedback_negative: "Tenías que reemplazar el verbo 'haya' por 'ha'",
+				feedback_positive: "¡Muy bien, continuamos con otro item de práctica"
+		  },
+			{ text: "Me gustaría ir a visitar a mi hermano mañana, pero no voy a poder ir porque trabajo todo el día",
+		    response: "go",
+		    audio: "prac-04.mp3",
+				feedback_negative: "En esta frase, no había nada que corregir.",
+				feedback_positive: "¡Muy bien! La práctica ha terminado."
+		  }];
+
+
+			var practice_block;
+	    for(var i = 0; i < practice.length; i++){
+	      practice_block = {timeline: [
+					{
+	          type: "single-audio",
+	          stimulus: '' + prefix + practice[i].audio + '',
+	          prompt: "<div class='jspsych-prompt' style='text-align:center'>Práctica {0}/{1}</div>".format(i+1, practice.length),
+	          trial_ends_after_audio : true,
+						timing_post_trial: 1000,
+	        },
+					//Repeat stimuli twice with a one-second delay inbetween.
+					{
+	          type: "single-audio",
+	          stimulus: '' + prefix + practice[i].audio + '',
+	          prompt: "<div class='jspsych-prompt' style='text-align:center'>Práctica {0}/{1} (bis)</div>".format(i+1, practice.length),
+	          trial_ends_after_audio : true,
+	        },
+	        {
+	          type: "survey-likert",
+	          questions: ['¿Qué te ha parecido?'],
+	          labels : [['-2 (no nativo)', '-1', '0 (no sé)', '1', '2 (nativo)']],
+	          data: {"response" : practice[i].response, 'item_id':'pre_'+i, feedback_positive: practice[i].feedback_positive, feedback_negative: practice[i].feedback_negative},
+	          button_label : "Confirmar",
+						required: true,
+						oninvalid:"Tienes que elegir un valor en la escala, si no estás seguro, puedes seleccionar 0.",
+	          on_finish: function(data){
+	            var correct = false;
+	            if(data.response == 'go' && data.rt > -1 && jQuery.parseJSON( data.responses ).Q0 > 2){
+	              correct = true;
+								alert(data.feedback_positive);
+	            } else if(data.response == 'no-go' && data.rt > -1 && jQuery.parseJSON( data.responses ).Q0 < 2){
+	              correct = true;
+	            }else if(jQuery.parseJSON( data.responses ).Q0 > 2){
+								alert(data.feedback_negative);
+							}
+	            jsPsych.data.addDataToLastTrial({correct: correct, likert: jQuery.parseJSON( data.responses ).Q0});
+	          },
+	        },
+	        {
+	          timeline : [
+	            {
+	              type: "survey-text",
+	              preamble: '¿La frase no te parece correcta? Corrígela: ',
+	              questions: [practice[i].text],
+	              values: [practice[i].text],
+	              rows: [2],
+	              columns: [120],
+	              button_label : "Confirmar",
+	              data: {'answer': practice[i].correct ? practice[i].correct : [], 'item_id':'pre' + i, feedback_positive: practice[i].feedback_positive, feedback_negative: practice[i].feedback_negative},
+								on_finish: function(data){
+									var data = jsPsych.data.getLastTrialData().first().values()[0]
+									var answer =  jQuery.parseJSON(data.responses).Q0;
+									var correct = false;
+									for(i in data.answer){
+										if(answer.trim() == data.answer[i].trim()){
+											correct = true;
+											alert(data.feedback_positive);
+										}
+									}
+									if(!correct)alert(data.feedback_negative);
+			            jsPsych.data.addDataToLastTrial({correct: correct, response: answer});
+			          },
+	            }],
+	          conditional_function: function(){
+	            var data = jsPsych.data.getLastTrialData().first().values()[0];
+	            if(jQuery.parseJSON( data.responses ).Q0 < 2)
+	              return true;
+	            else
+	              return false;
+	          }
+	        }],
+	        choices: [13]};
+
+	      timeline.push(practice_block);
+	    }
+
+		var get_ready_block = {
+      type: "text",
+      text: "<div class='jspsych-prompt'><p>La práctica ha terminado.</p>" +
+            "<p>Ahora, la prueba va a empezar.</p>" +
+            "<p>Por favor, haz la prueba de una vez, sin interrupción.</p>" +
+						"<p>Presiona cualquier tecla para continuar.</p></div>",
+    };
+
+		timeline.push(get_ready_block);
+
     var stimuli = [
 			{ text: "Contrataremos una persona que hable holandés, si logramos encontrar alguna.",
 		    response: "go",
