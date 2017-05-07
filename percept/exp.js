@@ -86,7 +86,7 @@ function runExperiment(){
 												 "LHSECAV01", "LHSECAV02", "LHSECAV03", "LHSECAV04", "LHSECAV05", "LHSECAV06",
 												 "LHSECINT01", "LHSIMAV01", "LHSIMAV02", "LHSIMAV03", "LHSIMAV04", "LHSIMAV05",
 												 "N01", "N02", "N03", "N04", "N05", "N06", "N07", "N08", "N09", "N10", "N11",
-												 "N12", "N13", "N14", "N15", "N16", "N17", "N18", "N19", "N20"];
+												 "N12", "N13", "N14", "N15", "N16", "N17", "N18", "N19", "N20", "N21", "N22", "N23", "N24", "N25", "N26"];
 				if(!currentCode || userCodes.indexOf(currentCode) == -1){
 					//invalid code
 					return true;
