@@ -81,7 +81,12 @@ function runExperiment(){
 				var data = jsPsych.data.getDataByTimelineNode("0.0-0.0").first().values()[0];
 				var currentCode = data.code ? data.code.toUpperCase().trim() : '';
 				//validate code
-				var userCodes = ["L2AV01", "L2AV02","L2AV03", "L2AV04", "L2AV05", "L2AV06", "L2AV07", "L2AV08", "L2AV09", "L2AV10", "L2INT01", "L2INT02", "L2INT03", "L2INT04", "L2INT05", "LHSECAV01", "LHSECAV02", "LHSECAV03", "LHSECAV04", "LHSECAV05", "LHSECAV06","LHSECINT01", "LHSIMAV01", "LHSIMAV02", "LHSIMAV03", "LHSIMAV04", "LHSIMAV05","N01", "N02", "N03", "N04", "N05", "N06", "N07", "N08", "N09", "N10", "N11"];
+				var userCodes = ["L2AV01", "L2AV02","L2AV03", "L2AV04", "L2AV05", "L2AV06", "L2AV07", "L2AV08", "L2AV09", "L2AV10",
+												 "L2INT01", "L2INT02", "L2INT03", "L2INT04", "L2INT05",
+												 "LHSECAV01", "LHSECAV02", "LHSECAV03", "LHSECAV04", "LHSECAV05", "LHSECAV06",
+												 "LHSECINT01", "LHSIMAV01", "LHSIMAV02", "LHSIMAV03", "LHSIMAV04", "LHSIMAV05",
+												 "N01", "N02", "N03", "N04", "N05", "N06", "N07", "N08", "N09", "N10", "N11",
+												 "N12", "N13", "N14", "N15", "N16", "N17", "N18", "N19", "N20"];
 				if(!currentCode || userCodes.indexOf(currentCode) == -1){
 					//invalid code
 					return true;
