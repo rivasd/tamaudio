@@ -115,13 +115,27 @@ function runExperiment(){
 		timeline.push({
 			type: "text",
 			text: "<h3>TAM Audio</h3>\
-				<p>Merci de participer à notre expérience. Avant de continuer, veuillez lire attentivement ce qui suit:</p>\
-				<ul>\
-			  <li>Avant de commencer l'expérience, vous devez donner votre consentement en cliquant sur \"Je consens\" au bas de la page suivante.</li>\
-			  <li>Le formulaire de consentement est en français, mais le reste de l'expérience se déroulera en espagnol.</li>\
-				<li>Vous devez effectuer cette expérience sur un <strong>ordinateur</strong> et non sur un téléphone portable, vous aurez à utiliser votre clavier.</li>\
-				<li>Appuyez sur une touche pour continuer.</li>\
-				</ul>",
+				<div class=\"mdl-grid\">\
+					<div class=\"mdl-cell mdl-cell--5-col\">\
+						<p>Merci de vouloir participer à notre expérience. Avant de continuer, veuillez lire attentivement ce qui suit :</p>\
+						<ul>\
+					  <li>Avant de commencer l'expérience, vous devez donner votre consentement en cliquant sur « Je consens » au bas de la page suivante.</li>\
+					  <li>Le formulaire de consentement est en français, mais le reste de l'expérience se déroulera en espagnol.</li>\
+						<li>Vous devez effectuer cette expérience sur un <strong>ordinateur</strong> et non sur un téléphone portable, vous aurez à utiliser votre clavier.</li>\
+						</ul>\
+						<p>Maintenant, appuyez sur une touche pour continuer.</p>\
+						</div>\
+						<div class=\"mdl-cell mdl-cell--1-col\"></div>\
+						<div class=\"mdl-cell mdl-cell--5-col\">\
+						<p>Gracias por querer participar en nuestro experimento. Antes de continuar, por favor, lea atentamente lo siguiente:</p>\
+						<ul>\
+					  <li>Antes de comenzar el experimento, necesitamos su consentimiento. Para ello, tiene que hacer clic sobre el botón \"Je consens\" abajo de la página siguiente.</li>\
+					  <li>El formulario de consentimiento está en francés, pero todo el resto de la prueba se hará en español.</li>\
+						<li>Para hacer la prueba, se debe utilizar un <strong>ordenador</strong> y no un móvil.<br /><br /></li>\
+						</ul>\
+						<p>Ahora, presione cualquier tecla para continuar.</p>\
+						</div>\
+						</div>",
 			mdl_layout: true,
 		});
 
