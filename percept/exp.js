@@ -131,7 +131,7 @@ function runExperiment(){
 						<ul>\
 					  <li>Antes de comenzar el experimento, necesitamos su consentimiento. Para ello, tiene que hacer clic sobre el botón \"Je consens\" abajo de la página siguiente.</li>\
 					  <li>El formulario de consentimiento está en francés, pero todo el resto de la prueba se hará en español.</li>\
-						<li>Para hacer la prueba, se debe utilizar un <strong>ordenador</strong> y no un móvil.<br /><br /></li>\
+						<li>Para hacer la prueba, se debe utilizar un <strong>ordenador</strong> y no un móvil.</li>\
 						</ul>\
 						<p>Ahora, presione cualquier tecla para continuar.</p>\
 						</div>\
@@ -971,6 +971,7 @@ function runExperiment(){
 			},
 			display_element: 'jsPsychTarget',
 			on_trial_start:function(){
+				$("#loading").remove();
 				$("#jsPsychTarget")[0].scrollIntoView();
 			}
 		});
