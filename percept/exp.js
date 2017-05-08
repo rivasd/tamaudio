@@ -43,6 +43,8 @@ function runExperiment(){
 			else return 'N/A';
 		}
 
+
+
 		function assignGroup(data){
 			var spanish = ['Spanish', 'Español', 'Espanol', 'Espagnol'];
 			var french = ['French', 'Français', 'Francais', 'Francés'];
@@ -76,29 +78,60 @@ function runExperiment(){
 			else return true;
 		}
 
-		function validate_code(){
+		function validate_code(customCode){
 				//This is the first node
-				var data = jsPsych.data.getDataByTimelineNode("0.0-0.0").first().values()[0];
+				var data = jsPsych.data.getDataByTimelineNode("0.0-2.0").first().values()[0];
 				var currentCode = data.code ? data.code.toUpperCase().trim() : '';
+				var valid = false;
 				//validate code
-				var userCodes = ["L2AV01", "L2AV02","L2AV03", "L2AV04", "L2AV05", "L2AV06", "L2AV07", "L2AV08", "L2AV09", "L2AV10",
-												 "L2INT01", "L2INT02", "L2INT03", "L2INT04", "L2INT05",
-												 "LHSECAV01", "LHSECAV02", "LHSECAV03", "LHSECAV04", "LHSECAV05", "LHSECAV06",
-												 "LHSECINT01", "LHSIMAV01", "LHSIMAV02", "LHSIMAV03", "LHSIMAV04", "LHSIMAV05",
-												 "N01", "N02", "N03", "N04", "N05", "N06", "N07", "N08", "N09", "N10", "N11",
-												 "N12", "N13", "N14", "N15", "N16", "N17", "N18", "N19", "N20", "N21", "N22", "N23", "N24", "N25", "N27", "N28", "N29", "N30",
-										 		 "N31", "N32", "N33", "N34", "N35", "N36", "N37", "N38", "N39", "N40", "N41", "N42", "N43", "N44", "N45", "N46", "N47"];
-				if(!currentCode || userCodes.indexOf(currentCode) == -1){
-					//invalid code
-					return true;
+				if(customCode){
+					if(currentCode && customCode.indexOf(currentCode) != -1){
+						valid = true;
+					}
 				}else{
-					return false;
+					var userCodes = ["L2AV01", "L2AV02","L2AV03", "L2AV04", "L2AV05", "L2AV06", "L2AV07", "L2AV08", "L2AV09", "L2AV10",
+													 "L2INT01", "L2INT02", "L2INT03", "L2INT04", "L2INT05",
+													 "LHSECAV01", "LHSECAV02", "LHSECAV03", "LHSECAV04", "LHSECAV05", "LHSECAV06",
+													 "LHSECINT01", "LHSIMAV01", "LHSIMAV02", "LHSIMAV03", "LHSIMAV04", "LHSIMAV05",
+													 "N01", "N02", "N03", "N04", "N05", "N06", "N07", "N08", "N09", "N10", "N11",
+													 "N12", "N13", "N14", "N15", "N16", "N17", "N18", "N19", "N20", "N21", "N22", "N23", "N24", "N25", "N27", "N28", "N29", "N30",
+											 		 "N31", "N32", "N33", "N34", "N35", "N36", "N37", "N38", "N39", "N40", "N41", "N42", "N43", "N44", "N45", "N46", "N47",
+											 		 "SKIP_TO_END", "SKIP_PRACTICE"];
+					if(!currentCode || userCodes.indexOf(currentCode) == -1){
+						//invalid code
+						valid = false;
+					}else{
+						valid = true;
+					}
 				}
+
+
+				return !valid
 		}
 
     /* create experiment timeline array */
     var timeline = [];
 
+		timeline.push({
+			type: "text",
+			text: "<h3>TAM Audio</h3>\
+				<p>Merci de participer à notre expérience. Avant de continuer, veuillez lire attentivement ce qui suit:</p>\
+				<ul>\
+			  <li>Avant de commencer l'expérience, vous devez donner votre consentement en cliquant sur \"Je consens\" au bas de la page suivante.</li>\
+			  <li>Le formulaire de consentement est en français, mais le reste de l'expérience se déroulera en espagnol.</li>\
+				<li>Vous devez effectuer cette expérience sur un <strong>ordinateur</strong> et non sur un téléphone portable, vous aurez à utiliser votre clavier.</li>\
+				<li>Appuyez sur une touche pour continuer.</li>\
+				</ul>",
+			mdl_layout: true,
+		});
+
+
+		timeline.push({
+			type: "html",
+			url: prefix + "../consentement.html",
+			mdl_layout: true,
+			cont_btn:"consent"
+		});
 
 		timeline.push({
 			type: "form",
@@ -243,7 +276,8 @@ function runExperiment(){
 		var placement_test = {timeline: [
 			{
 				type: "survey-multi-choice",
-				preamble: "<em>Cada una de las oraciones siguientes contiene un espacio que indica que una palabra o una frase ha sido omitida. A partir de las cuatro posibilidades que se te ofrecen, elige la que mejor completa la oración.</em>",
+				mdl_layout: true,
+				preamble: "<h3>Prueba de selección múltiple</h3><p><em>Cada una de las oraciones siguientes contiene un espacio que indica que una palabra o una frase ha sido omitida. A partir de las cuatro posibilidades que se te ofrecen, elige la que mejor completa la oración.</em></p>",
 				questions: [
 					"1. Al oír del accidente de su buen amigo, Paco se puso __________ .", //1
 					"2. No puedo comprarlo porque me __________ dinero.", //2
@@ -378,7 +412,7 @@ function runExperiment(){
 				text: "<p><em>En el siguiente texto, algunas palabras han sido sustituidas por listas de opciones. " +
 								"Primero, lee el texto completo para poder entenderlo. Después, vuelve a leerlo y elige en las listas de opciones " +
 								"la palabra que mejor corresponde a cada oración. Para confirmar tus respuestas al final del texto, pulsa el botón 'Enviar mis respuestas' </em></p>"+
-								"<h3>El sueño de Joan Miro</h3>" +
+								"<h4>El sueño de Joan Miro</h4>" +
 							"<p>Hoy se inaugura en Palma de Mallorca la Fundación Pilar y Joan Miró, en el mismo lugar en donde el artista vivió sus últimos treinta y cinco años. " +
 							"El sueño de Joan Miró se ha ${=cumplido~completado~terminado}.  " + //1
 							"Los fondos donados a la ciudad por el pintor y su esposa en 1981 permitieron que el sueño se ${inició~=iniciara~iniciaba}; "+ //2
@@ -401,7 +435,8 @@ function runExperiment(){
 							"que el centro acoja a unos 150.000 visitantes al año. Los responsables esperan que la institución funcione a ${total~=pleno~entero} "+ //19
 							"rendimiento a principios de la ${=siguiente~próxima~pasada} semana, "+ //20
 							"si bien el catálogo completo de las obras de la Fundación Pilar y Joan Miró no estará listo hasta dentro de dos años.</p>",
-				 button_label: "Enviar mis respuestas"
+				 button_label: "Enviar mis respuestas",
+				 mdl_layout: true
 				},
 			]}
 
@@ -413,22 +448,24 @@ function runExperiment(){
 
 		//Juicio de oraciones
 
-
-
     /* define welcome message block */
-    var welcome_block = {
+    var welcome_block = {timeline: [{
       type: "text",
-      text: "<p>Bienvenidos al experimento 'TAM Audio'.</p>" +
-            "<p>Gracias por participar.</p>" +
-            "<p>Presione cualquier tecla para continuar.</p>",
-    };
-    //timeline.push(welcome_block);
+			mdl_layout: true,
+      text: "<h3>¿Listo?</h3>"+
+						"<p>Estás a punto de empezar el experimento.</p>" +
+						"<p>Necesitarás oír frases, asegúrate de que tienes audífonos o altavoces conectados.</p>" +
+            "<p>Presiona cualquier tecla para continuar.</p>",
+	    }], conditional_function: function(){return validate_code(['SKIP_TO_END', 'SKIP_PRACTICE'])}
+		};
+    timeline.push(welcome_block);
 
     /* define instructions block */
-    var instructions_block = {
+    var instructions_block = {timeline:[{
       type: "single-audio",
       stimulus: prefix + "instrucciones.mp3",
-      prompt: "<div class='jspsych-prompt'><p>En esta prueba vas a oír varias frases. Escúchalas y decide en cada caso si pueden haber sido dichas por un hablante nativo del español.</p>" +
+			mdl_layout:true,
+      prompt: "<p>En esta prueba vas a oír varias frases. Escúchalas y decide en cada caso si pueden haber sido dichas por un hablante nativo del español.</p>" +
             "<p>Debes utilizar la escala que se te ofrece. Esta escala contiene cinco números de -2 a 2, los cuales corresponden a las siguientes respuestas: </p>" +
             "<ul style=''>" +
             "<li>-2: estoy seguro de que no podría ser dicha por un hablante nativo</li>" +
@@ -440,8 +477,9 @@ function runExperiment(){
 						"<p>Cada vez que marques -2 o -1 en la escala, la frase aparecerá en pantalla. Por favor, corrígela para que parezca haber sido dicha por un hablante nativo.</p> " +
 						"<p>Vas a oír cada frase dos veces antes de responder. Es importante que sigas tu primer impulso al contestar, entonces, responde rápidamente.  </p> " +
 						"<p>Ahora presiona cualquier tecla para continuar.</p> " +
-            "</div>",
+            "",
       timing_post_trial: 0,
+			}], conditional_function: function(){return validate_code(['SKIP_TO_END', 'SKIP_PRACTICE'])}
     };
 
     timeline.push(instructions_block);
@@ -486,16 +524,18 @@ function runExperiment(){
 					{
 	          type: "single-audio",
 	          stimulus: '' + prefix + practice[i].audio + '',
-	          prompt: "<div class='jspsych-prompt' style='text-align:center'>Práctica {0}/{1}</div>".format(i+1, practice.length),
+	          prompt: "<h2 style='text-align:center'>Práctica {0}/{1}</h2>".format(i+1, practice.length),
 	          trial_ends_after_audio : true,
-						timing_post_trial: 1000,
+						timing_post_trial_internal: 1000,
+						mdl_layout: true,
 	        },
 					//Repeat stimuli twice with a one-second delay inbetween.
 					{
 	          type: "single-audio",
 	          stimulus: '' + prefix + practice[i].audio + '',
-	          prompt: "<div class='jspsych-prompt' style='text-align:center'>Práctica {0}/{1} (bis)</div>".format(i+1, practice.length),
+	          prompt: "<h2 style='text-align:center'>Práctica {0}/{1} (bis)</h2>".format(i+1, practice.length),
 	          trial_ends_after_audio : true,
+						mdl_layout: true,
 	        },
 	        {
 	          type: "survey-likert",
@@ -504,6 +544,7 @@ function runExperiment(){
 	          data: {"response" : practice[i].response, 'item_id':'pre_'+i, feedback_positive: practice[i].feedback_positive, feedback_negative: practice[i].feedback_negative},
 	          button_label : "Confirmar",
 						required: true,
+						mdl_layout: true,
 						oninvalid:"Tienes que elegir un valor en la escala, si no estás seguro, puedes seleccionar 0.",
 	          on_finish: function(data){
 	            var correct = false;
@@ -528,6 +569,7 @@ function runExperiment(){
 	              rows: [2],
 	              columns: [120],
 	              button_label : "Confirmar",
+								mdl_layout: true,
 	              data: {'answer': practice[i].correct ? practice[i].correct : [], 'item_id':'pre' + i, feedback_positive: practice[i].feedback_positive, feedback_negative: practice[i].feedback_negative},
 								on_finish: function(data){
 									var data = jsPsych.data.getLastTrialData().first().values()[0]
@@ -551,18 +593,24 @@ function runExperiment(){
 	              return false;
 	          }
 	        }],
-	        choices: [13]};
+	        choices: [13],
+					conditional_function: function(){return validate_code(['SKIP_TO_END', 'SKIP_PRACTICE'])}
+				};
 
 	      timeline.push(practice_block);
 	    }
 
-		var get_ready_block = {
+		var get_ready_block = {timeline:[{
       type: "text",
-      text: "<div class='jspsych-prompt'><p>La práctica ha terminado.</p>" +
+			mdl_layout: true,
+      text: "<h3>La práctica ha terminado</h3>" +
             "<p>Ahora, la prueba va a empezar.</p>" +
-            "<p>Por favor, haz la prueba de una vez, sin interrupción.</p>" +
-						"<p>Presiona cualquier tecla para continuar.</p></div>",
-    };
+            "<p>Por favor, hazla de una vez, sin interrupción.</p>" +
+						"<p>Presiona cualquier tecla para continuar.</p>",
+
+		    }],
+				conditional_function: function(){return validate_code(['SKIP_TO_END', 'SKIP_PRACTICE'])}
+			};
 
 		timeline.push(get_ready_block);
 
@@ -818,16 +866,18 @@ function runExperiment(){
 				{
           type: "single-audio",
           stimulus: '' + prefix + stimuli[i].audio + '',
-          prompt: "<div class='jspsych-prompt' style='text-align:center'>{0}/{1}</div>".format(i+1, stimuli.length),
+          prompt: "<h2 style='text-align:center'>{0}/{1}</h2>".format(i+1, stimuli.length),
           trial_ends_after_audio : true,
-					timing_post_trial: 1000,
+					timing_post_trial_internal: 1000,
+					mdl_layout: true,
         },
 				//Repeat stimuli twice with a one-second delay inbetween.
 				{
           type: "single-audio",
           stimulus: '' + prefix + stimuli[i].audio + '',
-          prompt: "<div class='jspsych-prompt' style='text-align:center'>{0}/{1} (bis)</div>".format(i+1, stimuli.length),
+          prompt: "<h2 style='text-align:center'>{0}/{1} (bis)</h2>".format(i+1, stimuli.length),
           trial_ends_after_audio : true,
+					mdl_layout: true,
         },
         {
           type: "survey-likert",
@@ -835,6 +885,7 @@ function runExperiment(){
           labels : [['-2 (no nativo)', '-1', '0', '1', '2 (nativo)']],
           data: {"response" : stimuli[i].response, 'item_id':i},
           button_label : "Confirmar",
+					mdl_layout: true,
 					required: true,
 					oninvalid:"Tienes que elegir un valor en la escala, si no estás seguro, puedes seleccionar 0.",
           on_finish: function(data){
@@ -857,6 +908,7 @@ function runExperiment(){
               rows: [2],
               columns: [120],
               button_label : "Confirmar",
+							mdl_layout: true,
               data: {'answer': stimuli[i].correct ? stimuli[i].correct : [], 'item_id':i},
 							on_finish: function(data){
 								var data = jsPsych.data.getLastTrialData().first().values()[0]
@@ -878,7 +930,9 @@ function runExperiment(){
               return false;
           }
         }],
-        choices: [13]};
+        choices: [13],
+				conditional_function: function(){return validate_code(['SKIP_TO_END'])}
+			};
 
       timeline.push(test_block);
     }
@@ -892,7 +946,9 @@ function runExperiment(){
         //jsPsych.data.displayData('');
 				//jsPsych.data.get().localSave('CSV', 'mydata.csv');
 				//data = data.getDataAsCSV([{trial_type: 'form'}, {trial_type: 'survey-multi-choice'}, {trial_type: 'cloze'}, {trial_type: 'survey-likert'}, {trial_type: 'survey-text'}]);
+				var display_element = jsPsych.getDisplayElement();
 
+				display_element.innerHTML = jsPsych.pluginAPI.getMDLLayout('<h3>{0}</h3><p>{1}</p><p>{2}</p>'.format('Fin del experimento', 'Ya has terminado. ¡Muchas gracias por tu participación!', "No dudes en contactarnos si tienes preguntas o si algo te ha parecido extraño en la prueba."));
 
 				Percept.save({
 					data:data,
