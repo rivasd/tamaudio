@@ -11,7 +11,7 @@ function runExperiment(){
 			save:function(data){
 				$.ajax({
 			    url: 'server/save.php',
-			    data : {data:  data.data.csv(), filename:data.data.first().values()[0].code, group:data.group},
+			    data : {data:  data.data.csv(), filename:jsPsych.data.getDataByTimelineNode("0.0-2.0").first().values()[0].code, group:data.group},
 			    type: 'POST'
 			  });
 			}
