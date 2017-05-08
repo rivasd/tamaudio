@@ -971,7 +971,7 @@ function runExperiment(){
 			},
 			display_element: 'jsPsychTarget',
 			on_trial_start:function(){
-				$("#loading").remove();
+				if($("#loading").length) $("#loading").remove();
 				$("#jsPsychTarget")[0].scrollIntoView();
 			}
 		});
