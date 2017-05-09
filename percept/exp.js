@@ -647,7 +647,7 @@ function runExperiment(){
 		    audio: "stim-04.mp3"
 		  },
 		  { text: "Compraré una casa que queda en el centro, si hay alguna a buen precio.",
-		    correct: ["Compraré una casa que quede en el centro, si hay alguna a buen precio."],
+		    correct: ["Compraré una casa que quede en el centro, si hay alguna a buen precio.", "Compraré una casa que quede en el centro, si encuentro alguna a buen precio."],
 		    response: "no-go",
 		    audio: "stim-05.mp3"
 		  },
@@ -679,7 +679,7 @@ function runExperiment(){
 		    audio: "stim-11.mp3"
 		  },
 		  { text: "Compraré un traje que va bien con el tuyo, si encuentro alguno en esta tienda. ",
-		    correct: ["Compraré un traje que vaya bien con el tuyo, si encuentro alguno en esta tienda. "],
+		    correct: ["Compraré un traje que vaya bien con el tuyo, si encuentro alguno en esta tienda. ", "Compraré un traje que venga bien con el tuyo, si encuentro alguno en esta tienda. "],
 		    response: "no-go",
 		    audio: "stim-12.mp3"
 		  },
@@ -692,12 +692,12 @@ function runExperiment(){
 		    audio: "stim-14.mp3"
 		  },
 		  { text: "Podemos navegar en un barco que tenga cuatro cabinas. Es aquel que pertenece a la compañía \"Caribe sol\".  ",
-		    correct: ["Podemos navegar en un barco que tiene cuatro cabinas. Es aquel que pertenece a la compañía \"Caribe sol\".  "],
+		    correct: ["Podemos navegar en un barco que tiene cuatro cabinas. Es aquel que pertenece a la compañía \"Caribe sol\".", "Navegaremos en un barco que tiene cuatro cabinas. Es aquel que pertenece a la compañía \"Caribe sol\".", "Podemos navegar en el barco que tiene cuatro cabinas. Es aquel que pertenece a la compañía \"Caribe sol\"."],
 		    response: "no-go",
 		    audio: "stim-15.mp3"
 		  },
 		  { text: "Necesitamos un autobús que tiene asientos vacíos, pero están todos llenos.  ",
-		    correct: ["Necesitamos un autobús que tenga asientos vacíos, pero están todos llenos.  "],
+		    correct: ["Necesitamos un autobús que tenga asientos vacíos, pero están todos llenos.", "Necesitamos un autobús que tenga asientos vacíos, pero todos están llenos."],
 		    response: "no-go",
 		    audio: "stim-16.mp3"
 		  },
@@ -722,7 +722,7 @@ function runExperiment(){
 		    audio: "stim-20.mp3"
 		  },
 		  { text: "Con tu experiencia como curador artístico, puedes trabajar en una tienda que vende obras de arte. Busca en Internet, seguro hay alguna en esta ciudad.  ",
-		    correct: ["Con tu experiencia como curador artístico, puedes trabajar en una tienda que venda obras de arte. Busca en Internet, seguro hay alguna en esta ciudad."],
+		    correct: ["Con tu experiencia como curador artístico, puedes trabajar en una tienda que venda obras de arte. Busca en Internet, seguro hay alguna en esta ciudad.", "Con tu experiencia como curador artístico, podrás trabajar en una tienda que venda obras de arte. Busca en Internet, seguro hay alguna en esta ciudad."],
 		    response: "no-go",
 		    audio: "stim-21.mp3"
 		  },
@@ -732,12 +732,12 @@ function runExperiment(){
 		    audio: "stim-22.mp3"
 		  },
 		  { text: "Debes utilizar un ordenador que esté conectado a la red. Es el que está al lado de la puerta de entrada.  ",
-		    correct: ["Debes utilizar un ordenador que está conectado a la red. Es el que está al lado de la puerta de entrada.   "],
+		    correct: ["Debes utilizar un ordenador que está conectado a la red. Es el que está al lado de la puerta de entrada.", "Debes utilizar el ordenador que está conectado a la red. Es el que está al lado de la puerta de entrada."],
 		    response: "no-go",
 		    audio: "stim-23.mp3"
 		  },
 		  { text: "Contrataremos un músico que toca el bajo, pero por el momento solo encontramos pianistas.  ",
-		    correct: ["Contrataremos un músico que toque el bajo, pero por el momento solo encontramos pianistas.   "],
+		    correct: ["Contrataremos un músico que toque el bajo, pero por el momento solo encontramos pianistas.", "Contrataremos un músico que toque el bajo, pero por el momento solo hemos encontrado pianistas."],
 		    response: "no-go",
 		    audio: "stim-24.mp3"
 		  },
@@ -772,7 +772,7 @@ function runExperiment(){
 		    audio: "stim-31.mp3"
 		  },
 		  { text: "Veremos una película que esté nominada a un Oscar. Se titula \"Boyhood\".  ",
-		    correct: ["Veremos una película que está nominada a un Oscar. Se titula \"Boyhood\".   "],
+		    correct: ["Veremos una película que está nominada a un Oscar. Se titula \"Boyhood\".", "Veremos una película que esta nominada a un Oscar. Se titula \"Boyhood\"."],
 		    response: "no-go",
 		    audio: "stim-32.mp3"
 		  },
@@ -854,7 +854,7 @@ function runExperiment(){
 		    audio: "stim-50.mp3"
 		  },
 		  { text: "Laura verá en el cine una película que la haga llorar. La ha visto más de diez veces.   ",
-		    correct: ["Laura verá en el cine una película que la hace llorar. La ha visto más de diez veces.  "],
+		    correct: ["Laura verá en el cine una película que la hace llorar. La ha visto más de diez veces.", "Laura verá en el cine una película que la hará llorar. La ha visto más de diez veces."],
 		    response: "no-go",
 		    audio: "stim-51.mp3"
 		  },
@@ -868,7 +868,7 @@ function runExperiment(){
 		    audio: "stim-53.mp3"
 		  },
 		  { text: "En el próximo concierto tocaremos una guitarra que tenga doce cuerdas. La acabo de comprar en la tienda.  ",
-		    correct: ["En el próximo concierto tocaremos una guitarra que tiene doce cuerdas. La acabo de comprar en la tienda.  "],
+		    correct: ["En el próximo concierto tocaremos una guitarra que tiene doce cuerdas. La acabo de comprar en la tienda.", "En el próximo concierto tocaré una guitarra que tiene doce cuerdas. La acabo de comprar en la tienda."],
 		    response: "no-go",
 		    audio: "stim-54.mp3"
 		  },
