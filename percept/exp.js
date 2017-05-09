@@ -962,7 +962,7 @@ function runExperiment(){
 				//data = data.getDataAsCSV([{trial_type: 'form'}, {trial_type: 'survey-multi-choice'}, {trial_type: 'cloze'}, {trial_type: 'survey-likert'}, {trial_type: 'survey-text'}]);
 				var display_element = jsPsych.getDisplayElement();
 
-				display_element.innerHTML = jsPsych.pluginAPI.getMDLLayout('<h3>{0}</h3><p>{1}</p><p>{2}</p>'.format('Fin del experimento', 'Ya has terminado. ¡Muchas gracias por tu participación!', "No dudes en contactarnos si tienes preguntas o si algo te ha parecido extraño en la prueba."));
+				display_element.innerHTML = jsPsych.pluginAPI.getMDLLayout('<h3>{0}</h3><p>{1}</p>'.format('Fin del experimento', 'Ya has terminado. ¡Muchas gracias por tu participación!'));
 
 				Percept.save({
 					data:data,
