@@ -27,17 +27,24 @@ if(isset($_POST['mode']) && $_POST['mode'] == 'tmp'){
   $ID = getUniqueID();
 }else{ //Task complete ...
   unlink("{$folder}tmp/{$_POST['uuid']}.csv");
-  if(isset($_POST['filename']) && !empty($_POST['filename'])){
-    //put in the noform folder
-    $folder .= 'noform/';
-    if(!file_exists($folder)) mkdir($folder);
+  if(!isset($_POST['folder'])){
+    if(isset($_POST['filename']) && !empty($_POST['filename'])){
+      //put in the noform folder
+      $folder .= 'noform/';
+      if(!file_exists($folder)) mkdir($folder);
 
-    $ID = $filename = $_POST['filename'];
-    //$ID = getUniqueID();
+      $ID = $filename = $_POST['filename'];
+      //$ID = getUniqueID();
+    }else{
+      $folder .= 'withform/';
+      if(!file_exists($folder)) mkdir($folder);
+    }
   }else{
-    $folder .= 'withform/';
+    $folder .= $_POST['folder'];
     if(!file_exists($folder)) mkdir($folder);
+    $ID = $filename = $_POST['filename'];
   }
+
 
   //assign filename when there is no code previously assigned
   if(!isset($filename)){
@@ -52,6 +59,8 @@ if($filename == $ID){
   $codeJSON = json_decode(file_get_contents($codeFile));
   $codeJSON->codes[] = $ID;
   sort($codeJSON->codes);
+  $codeJSON->codes = array_unique($codeJSON->codes);
+  $codeJSON->codes = array_values($codeJSON->codes);
   file_put_contents($codeFile, json_encode($codeJSON, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 }
 

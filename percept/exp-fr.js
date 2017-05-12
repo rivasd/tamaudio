@@ -9,14 +9,14 @@ function runExperiment(){
 		}
 		Percept = {
 			save:function(data){
+				filename = jsPsych.data.getDataByTimelineNode("0.0-1.0").first().values()[0] ? jsPsych.data.getDataByTimelineNode("0.0-1.0").first().values()[0].code : '';
 				$.ajax({
 			    url: 'server/save.php',
-			    data : {data:  data.data.csv(), uuid:data.uuid, group:data.group, level:data.level},
+			    data : {data:  data.data.csv(), filename:filename, uuid:data.uuid, group:data.group, level:data.level, folder:'french/'},
 			    type: 'POST'
 			  });
 			},
 			saveTemp: function(data){
-				filename = jsPsych.data.getDataByTimelineNode("0.0-2.0").first().values()[0]? jsPsych.data.getDataByTimelineNode("0.0-2.0").first().values()[0].code : '';
 				$.ajax({
 					url: 'server/save.php',
 					data : {data: jsPsych.data.get().csv(), uuid:data.uuid, mode:'tmp', group:data.group, level:data.level, overwrite:true},
@@ -71,6 +71,30 @@ function runExperiment(){
 			else return 'N/A';
 		}
 
+		function validate_code(customCode){
+				//This is the first node
+				var data = jsPsych.data.getDataByTimelineNode("0.0-1.0").first().values()[0];
+				var currentCode = data.code ? data.code.toUpperCase().trim() : '';
+				var valid = false;
+				//validate code
+				if(customCode){
+					if(currentCode && customCode.indexOf(currentCode) != -1){
+						valid = true;
+					}
+				}else{
+
+					if(!currentCode || userCodes.indexOf(currentCode) == -1){
+						//invalid code
+						valid = false;
+					}else{
+						valid = true;
+					}
+				}
+
+
+				return !valid
+		}
+
 
 
     /* create experiment timeline array */
@@ -94,16 +118,79 @@ function runExperiment(){
 		});
 
 
-		// timeline.push({
-		// 	type: "html",
-		// 	url: prefix + "../consentement.html",
-		// 	mdl_layout: true,
-		// 	cont_btn:"consent",
-		// 	on_finish:function(){
-		// 		Percept.saveTemp({uuid:uuid, group:currentGroup, level:currentLevel});
-		// 	}
-		// });
 
+
+		timeline.push({
+			type: "form",
+			schema: {
+				form: {form_title : "TAM en français", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: 'Si vous avez déjà un code, veuillez le saisir ici, sinon continuer en laissant cet espace vide.', use_data_key: true},
+				"code" :  {type: "text", label: "Código", needQuestion:false, floating:true, value:""},
+				onSubmit: {label: "Continuer", onclick: function(){
+					//console.log(jsPsych.currentTimelineNodeID());
+				}},
+			}
+		});
+
+		timeline.push({timeline: [{
+			type: "html",
+			url: prefix + "../consentement.html",
+			mdl_layout: true,
+			cont_btn:"consent",
+			on_finish:function(){
+				Percept.saveTemp({uuid:uuid, group:currentGroup, level:currentLevel});
+			}
+		}], conditional_function :validate_code
+		});
+
+
+		//Linguistic background questionnaire
+		// partially adapted from the Adult Multilingual Questionnaire (Blume,
+		// Courtney, Urzúa, Yang & Lust, 2010), Unsworth’s (2012) Utrecht Bilingual Language
+		// Exposure Calculator (UBiLEC) and Marian, Blumenfeld & Kaushanskaya’s (2007)
+		// Language Experience and Proficiency Questionnaire (LEAP-Q).
+		var background_questions = {
+			timeline: []
+		}
+
+
+
+		background_questions.timeline.push({
+			type: "form",
+			schema: {
+				form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: ' '},
+				"name" :  {type: "text", label: " ", question: "Nom", required: true, errorInfo:"* Réponse obligatoire"},
+				"email" :  {type: "email", label: " ", question: "Courriel", required: true, errorInfo:"* Correo electrónico válido obligatorio"},
+				"sex" :  {type: "radio", labels: ["Masculin", "Féminin"], question:"Sexe", required: true, errorInfo:"* Réponse obligatoire"},
+				"birth_date" :  {type: "date", label:' ', question: "Date de naissance", required: true, errorInfo:"* Réponse obligatoire"},
+				"birth_place" :  {type: "text", label:" ", question: "Lieu de naissance", required: true, errorInfo:"* Réponse obligatoire"},
+				"school_level" :  {type: "text", label: "Secondaire, cégep, bacc., maitrise, doctorat, etc.", question: "Niveau de scolarité", required: true, errorInfo:"* Réponse obligatoire"},
+				"school_language" :  {type: "text", label: " ", question:"Langue principale d'enseignment", required: true, errorInfo:"* Réponse obligatoire"},
+				"origin_mother" :  {type: "text", label: " ", question:"Pays d'origine et langue maternelle de votre mère", required: true, errorInfo:"* Réponse obligatoire"},
+				"origin_father" :  {type: "text", label: " ", question:"Pays d'origine et langue maternelle de votre père", required: true, errorInfo:"* Réponse obligatoire"},
+				"mother_tongue" :  {type: "text", label: " ", question:"Quelle est votre langue maternelle", required: true, errorInfo:"* Réponse obligatoire"},
+				"other_languages" :  {type: "text", label: " ", question:"Quelle autres langues parlez vous et à quel niveau?", required: true, errorInfo:"* Réponse obligatoire"},
+				"other_languages" :  {type: "textarea", placeholder: "L2: Anglais, niveau avancé. L3: Japonais, niveau débutant", question: "Quelle autres langues parlez vous et à quel niveau?", required: true, errorInfo:"* Réponse obligatoire (vous pouvez écrire <em>aucune</em>)", cols:60},
+				onSubmit: {label: "Continuer", onclick: function(){}}
+			}
+		});
+
+		//Comentario
+		background_questions.timeline.push({
+			type: "form",
+			schema: {
+				form: {form_title : "Commentaires", form_description: 'Avez-vous d\'autres commentaires qui pourraient être pertinent pour notre étude?', layout_color: "grey-300", content_bg_color: "grey-100"},
+				"Commentaires" :  {type: "textarea", question: 'Commentaires', placeholder:"Écrivez vos commentaires ici"},
+ 				onSubmit: {label: "Continuar"},
+			}
+		});
+
+		background_questions.on_finish = function(){
+				Percept.saveTemp({uuid:uuid, group:currentGroup, level:currentLevel});
+		}
+
+		background_questions.conditional_function = validate_code;
+
+		timeline.push(background_questions);
 
 		timeline.push({
 			type: "survey-text",
