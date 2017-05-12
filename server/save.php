@@ -31,6 +31,7 @@ if(isset($_POST['mode']) && $_POST['mode'] == 'tmp'){
   $filename = $_POST['uuid'];
   $ID = getUniqueID();
 }else{ //Task complete ...
+  unlink("{$folder}tmp/{$_POST['uuid']}.csv");
   if(isset($_POST['filename']) && !empty($_POST['filename'])){
     //put in the noform folder
     $folder .= 'noform/';

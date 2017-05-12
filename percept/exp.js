@@ -13,7 +13,7 @@ function runExperiment(){
 				if(filename.indexOf('SKIP') != -1)filename = '';
 				$.ajax({
 			    url: 'server/save.php',
-			    data : {data:  data.data.csv(), filename:filename, group:data.group, level:data.level},
+			    data : {data:  data.data.csv(), filename:filename, uuid:data.uuid, group:data.group, level:data.level},
 			    type: 'POST'
 			  });
 			},
@@ -40,8 +40,8 @@ function runExperiment(){
 		var languages = [];
 		var language_levels = ['Muy mal', 'Mal','Regular','Bien', 'Muy bien', 'Excelente'];
 		var language_order_name = ['Primera lengua', 'Segunda lengua', 'Tercera lengua', 'Cuarta lengua', 'Quinta lengua', 'Sexta lengua'];
-		var currentGroup = 'L2';
-		var currentLevel = 'INT';
+		var currentGroup;
+		var currentLevel;
 		var uuid = guid();
 		var userCodes = [];
 
@@ -1028,6 +1028,7 @@ function runExperiment(){
 				display_element.innerHTML = jsPsych.pluginAPI.getMDLLayout('<h3>{0}</h3><p>{1}</p>'.format('Fin del experimento', 'Ya has terminado. ¡Muchas gracias por tu participación!'));
 
 				Percept.save({
+					uuid:uuid,
 					data:data,
 					group:currentGroup,
 					level:currentLevel
