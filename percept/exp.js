@@ -9,11 +9,22 @@ function runExperiment(){
 		}
 		Percept = {
 			save:function(data){
+				filename = jsPsych.data.getDataByTimelineNode("0.0-2.0").first().values()[0] ? jsPsych.data.getDataByTimelineNode("0.0-2.0").first().values()[0].code : '';
+				if(filename.indexOf('SKIP') != -1)filename = '';
 				$.ajax({
 			    url: 'server/save.php',
-			    data : {data:  data.data.csv(), filename:jsPsych.data.getDataByTimelineNode("0.0-2.0").first().values()[0].code, group:data.group},
+			    data : {data:  data.data.csv(), filename:filename, group:data.group, level:data.level},
 			    type: 'POST'
 			  });
+			},
+			saveTemp: function(data){
+				filename = jsPsych.data.getDataByTimelineNode("0.0-2.0").first().values()[0]? jsPsych.data.getDataByTimelineNode("0.0-2.0").first().values()[0].code : '';
+				if(filename.indexOf('SKIP') != -1)filename = '';
+				$.ajax({
+					url: 'server/save.php',
+					data : {data: jsPsych.data.get().csv(), filename:filename, uuid:data.uuid, mode:'tmp', group:data.group, level:data.level, overwrite:true},
+					type: 'POST'
+				})
 			}
 		}
 		prefix = "percept/stimuli/";
@@ -29,7 +40,35 @@ function runExperiment(){
 		var languages = [];
 		var language_levels = ['Muy mal', 'Mal','Regular','Bien', 'Muy bien', 'Excelente'];
 		var language_order_name = ['Primera lengua', 'Segunda lengua', 'Tercera lengua', 'Cuarta lengua', 'Quinta lengua', 'Sexta lengua'];
-		var currentGroup;
+		var currentGroup = 'L2';
+		var currentLevel = 'INT';
+		var uuid = guid();
+		var userCodes = [];
+
+		//Load user codes
+		$.getJSON( 'data/codes.json', function(data){
+			userCodes = data.codes;
+		})
+
+		function guid() {
+		  function s4() {
+		    return Math.floor((1 + Math.random()) * 0x10000)
+		      .toString(16)
+		      .substring(1);
+		  }
+		  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+		    s4() + '-' + s4() + s4() + s4();
+		}
+
+
+
+		function getAgeList(){
+			var list = []
+			for(var i = 0; i<=70; i++){
+				list.push(i)
+			}
+			return list;
+		}
 		function getCurrentLanguages(){
 			return languages;
 		};
@@ -43,23 +82,21 @@ function runExperiment(){
 			else return 'N/A';
 		}
 
-
-
-		function assignGroup(data){
-			var spanish = ['Spanish', 'Español', 'Espanol', 'Espagnol'];
-			var french = ['French', 'Français', 'Francais', 'Francés'];
+		function setGroup(data){
+			var spanish = ['Spanish', 'Español', 'Espanol', 'Espagnol', 'esp', 'sp'];
+			var french = ['French', 'Français', 'Francais', 'Francés', 'fr'];
 			var english = ['English', 'Inglés', 'Ingles', 'Anglais'];
-			var group;
+			var group = '';
 			//"Native" speaker of spanish (N)
 			if(spanish.indexOf(data['language_1']) != -1 && data['language_1_start'][0] == 'Nacimiento'){
 				//Heritage speaker, simultaneous bilingual of Spanish/French
-				if(french.indexOf(data['language_2']) != -1 && (data['language_2_start'][0] == 'Nacimiento' || data['language_2_age'] < 3)){
+				if(french.indexOf(data['language_2']) != -1 && (data['language_2_start'][0] == 'Nacimiento' || data['language_2_age'] <= 3)){
 					group = "LHSIM";
 				//Heritage speaker, sequential bilingual of Spanish/French
-			}else if(french.indexOf(data['language_2']) != -1 && (data['language_2_start'][0] != 'Nacimiento' && data['language_2_age'] > 3)){
-					group = "LHSEC";
+			}else if(french.indexOf(data['language_2']) != -1 && (data['language_2_start'][0] != 'Nacimiento' && data['language_2_age'] > 3 && data['language_2_age'] <= 7)){
+						group = "LHSEC";
 				//Native speaker (we'll have to validate a few more things here)
-			}else if((data['language_2_start'][0]) != 'Nacimiento' && data['language_2_age'] > 20){
+				}else if((data['language_2_start'][0]) != 'Nacimiento'){
 					group = "N";
 				}
 			}
@@ -70,7 +107,23 @@ function runExperiment(){
 					group = 'L2';
 				}
 			}
+
+			if(!group)group = 'LX';
+			currentGroup = group;
 			return group;
+		}
+
+		function setSpanishLevel(){
+			var placement_results = jsPsych.data.get().filter([{trial_type: 'survey-multi-choice'}]).first().values()[0].score;
+			var cloze_results = jsPsych.data.get().filter([{trial_type: 'cloze'}]).first().values()[0].score;
+			var total_score = placement_results+cloze_results;
+			//0-29: principiante (PRI)
+			//30-39: intermedio (INT)
+			//40-50: avanzado (AV)
+			if(total_score < 30)currentLevel = 'PRI';
+			else if(total_score >=30 && total_score < 40)currentLevel = 'INT';
+			else currentLevel = 'AV';
+			return currentLevel;
 		}
 
 		function isLanguageDisabled(i){
@@ -81,6 +134,7 @@ function runExperiment(){
 		function validate_code(customCode){
 				//This is the first node
 				var data = jsPsych.data.getDataByTimelineNode("0.0-2.0").first().values()[0];
+				var level_mchoice = jsPsych.data.getDataByTimelineNode("0.0-5.0-0.0").first().values()[0];
 				var currentCode = data.code ? data.code.toUpperCase().trim() : '';
 				var valid = false;
 				//validate code
@@ -89,14 +143,7 @@ function runExperiment(){
 						valid = true;
 					}
 				}else{
-					var userCodes = ["L2AV01", "L2AV02","L2AV03", "L2AV04", "L2AV05", "L2AV06", "L2AV07", "L2AV08", "L2AV09", "L2AV10",
-													 "L2INT01", "L2INT02", "L2INT03", "L2INT04", "L2INT05",
-													 "LHSECAV01", "LHSECAV02", "LHSECAV03", "LHSECAV04", "LHSECAV05", "LHSECAV06",
-													 "LHSECINT01", "LHSIMAV01", "LHSIMAV02", "LHSIMAV03", "LHSIMAV04", "LHSIMAV05",
-													 "N01", "N02", "N03", "N04", "N05", "N06", "N07", "N08", "N09", "N10", "N11",
-													 "N12", "N13", "N14", "N15", "N16", "N17", "N18", "N19", "N20", "N21", "N22", "N23", "N24", "N25", "N26", "N27", "N28", "N29", "N30",
-											 		 "N31", "N32", "N33", "N34", "N35", "N36", "N37", "N38", "N39", "N40", "N41", "N42", "N43", "N44", "N45", "N46", "N47",
-											 		 "SKIP_TO_END", "SKIP_PRACTICE"];
+
 					if(!currentCode || userCodes.indexOf(currentCode) == -1){
 						//invalid code
 						valid = false;
@@ -136,7 +183,7 @@ function runExperiment(){
 						<p>Ahora, presione cualquier tecla para continuar.</p>\
 						</div>\
 						</div>",
-			mdl_layout: true,
+			mdl_layout: true
 		});
 
 
@@ -144,7 +191,10 @@ function runExperiment(){
 			type: "html",
 			url: prefix + "../consentement.html",
 			mdl_layout: true,
-			cont_btn:"consent"
+			cont_btn:"consent",
+			on_finish:function(){
+				Percept.saveTemp({uuid:uuid, group:currentGroup, level:currentLevel});
+			}
 		});
 
 		timeline.push({
@@ -200,7 +250,7 @@ function runExperiment(){
 						tab: {tab_title: language_order_name[i-1], id: 'language_' + (i) + '_tab', use_data_key:true},
 						["language_"+i] :  {type: "text", label: " ", question: language_order_name[i-1], required:true, errorInfo:"Por favor, entra un idioma", required: true, errorInfo:"* Respuesta obligatoria"},
 						["language_"+(i)+"_start"] :  {type: "radio", labels:["Nacimiento", "Después"], question:"¿Desde cuándo?", required: true, errorInfo:"* Respuesta obligatoria"},
-						["language_"+(i)+"_age"] :  {type: "text", label: "Escribir 0 si desde el 'nacimiento'", question:"¿Desde qué edad?", required: true, errorInfo:"* Respuesta obligatoria (puedes escribir 0)"},
+						["language_"+(i)+"_age"] :  {type: "number", label: "0 si desde el 'nacimiento'", question:"¿Desde qué edad? (en años)", required: true, errorInfo:"* Respuesta obligatoria (puedes escribir 0)"},
 						["language_"+(i)+"_where"] :  {type: "checkbox", labels:["Casa", "Guardería", "Otro lugar"], question:"¿Dónde la hablabas?", required: true, errorInfo:"* Respuesta obligatoria"},
 						["language_"+(i)+"_who"] :  {type: "checkbox", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?", required: true, errorInfo:"* Respuesta obligatoria"},
 					}
@@ -214,7 +264,7 @@ function runExperiment(){
 				}
 
 				//Assign a group to this user
-				currentGroup = assignGroup(data);
+				currentGroup = setGroup(data);
 				// if(data['language_1'])languages.push(data['language_1']);
 				// if(data['language_2'])languages.push(data['language_2']);
 				// if(data['language_3'])languages.push(data['language_3']);
@@ -226,7 +276,7 @@ function runExperiment(){
 				tab: {tab_title: language_order_name[i-1], id: 'language_' + (i) + '_tab'},
 				["language_"+i] :  {type: "text", label: " ", question:language_order_name[i-1], required:true, errorInfo:"Por favor, entra un idioma"},
 				["language_"+(i)+"_start"] :  {type: "radio", labels:["Nacimiento", "Después"], question:"¿Desde cuándo?", required: true, errorInfo:"* Respuesta obligatoria"},
-				["language_"+(i)+"_age"] :  {type: "text", label: "Escribir 0 si desde el 'nacimiento'", question:"¿Desde qué edad?", required: true, errorInfo:"* Respuesta obligatoria (puedes escribir 0)"},
+				["language_"+(i)+"_age"] :  {type: "number", label: "0 si desde el 'nacimiento'", question:"¿Desde qué edad? (en años)", required: true, errorInfo:"* Respuesta obligatoria (puedes escribir 0)"},
 				["language_"+(i)+"_where"] :  {type: "checkbox", labels:["Casa", "Guardería", "Otro lugar"], question:"¿Dónde la hablabas?", required: true, errorInfo:"* Respuesta obligatoria"},
 				["language_"+(i)+"_who"] :  {type: "checkbox", labels:["Madre", "Padre", "Otra persona"], question:"¿Con quién la hablabas?", required: true, errorInfo:"* Respuesta obligatoria"},
 			});
@@ -280,6 +330,10 @@ function runExperiment(){
  				onSubmit: {label: "Continuar"},
 			}
 		});
+
+		background_questions.on_finish = function(){
+				Percept.saveTemp({uuid:uuid, group:currentGroup, level:currentLevel});
+		}
 
 		background_questions.conditional_function = validate_code;
 
@@ -416,6 +470,9 @@ function runExperiment(){
 			}
 		]}
 		placement_test.conditional_function = validate_code;
+		placement_test.on_finish = function(){
+				Percept.saveTemp({uuid:uuid, group:currentGroup, level:currentLevel});
+		}
 		timeline.push(placement_test);
 
 		//Placement test (part B) - cloze test
@@ -455,7 +512,10 @@ function runExperiment(){
 			]}
 
 		cloze_test.conditional_function = validate_code;
-
+		cloze_test.on_finish = function(data){
+				setSpanishLevel()
+				Percept.saveTemp({uuid:uuid, group:currentGroup, level:currentLevel});
+		}
 		timeline.push(cloze_test);
 
 		//PAUSA
@@ -945,7 +1005,10 @@ function runExperiment(){
           }
         }],
         choices: [13],
-				conditional_function: function(){return validate_code(['SKIP_TO_END'])}
+				conditional_function: function(){return validate_code(['SKIP_TO_END'])},
+				on_finish : function(){
+					Percept.saveTemp({uuid:uuid, group:currentGroup, level:currentLevel});
+				}
 			};
 
       timeline.push(test_block);
@@ -966,7 +1029,8 @@ function runExperiment(){
 
 				Percept.save({
 					data:data,
-					group:currentGroup
+					group:currentGroup,
+					level:currentLevel
 				})
 			},
 			display_element: 'jsPsychTarget',
