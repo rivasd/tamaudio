@@ -33,8 +33,7 @@ function runExperiment(){
 	serverPsych.request(function (settings){
 
 		var languages = [];
-		var language_levels = ['Muy mal', 'Mal','Regular','Bien', 'Muy bien', 'Excelente'];
-		var language_order_name = ['Primera lengua', 'Segunda lengua', 'Tercera lengua', 'Cuarta lengua', 'Quinta lengua', 'Sexta lengua'];
+
 		var currentGroup = "L1";
 		var currentLevel = "FR";
 		var uuid = guid();
@@ -159,7 +158,7 @@ function runExperiment(){
 			schema: {
 				form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: ' '},
 				"name" :  {type: "text", label: " ", question: "Nom", required: true, errorInfo:"* Réponse obligatoire"},
-				"email" :  {type: "email", label: " ", question: "Courriel", required: true, errorInfo:"* Correo electrónico válido obligatorio"},
+				"email" :  {type: "email", label: " ", question: "Courriel", required: true, errorInfo:"* Courriel valide obligatoire"},
 				"sex" :  {type: "radio", labels: ["Masculin", "Féminin"], question:"Sexe", required: true, errorInfo:"* Réponse obligatoire"},
 				"birth_date" :  {type: "date", label:' ', question: "Date de naissance", required: true, errorInfo:"* Réponse obligatoire"},
 				"birth_place" :  {type: "text", label:" ", question: "Lieu de naissance", required: true, errorInfo:"* Réponse obligatoire"},
@@ -180,7 +179,7 @@ function runExperiment(){
 			schema: {
 				form: {form_title : "Commentaires", form_description: 'Avez-vous d\'autres commentaires qui pourraient être pertinent pour notre étude?', layout_color: "grey-300", content_bg_color: "grey-100"},
 				"Commentaires" :  {type: "textarea", question: 'Commentaires', placeholder:"Écrivez vos commentaires ici"},
- 				onSubmit: {label: "Continuar"},
+ 				onSubmit: {label: "Continuer"},
 			}
 		});
 
@@ -196,8 +195,8 @@ function runExperiment(){
 			type: "survey-text",
 			preamble: "<h3>1/3</h3><p>Dans ce test, vous trouverez des paires de phrases dont la première contient un espace qui indique qu'un verbe a été supprimé. Premièrement, lisez la paire de phrases en entier afin de bien la comprendre. Ensuite, veuillez remplir chaque espace en conjuguant le verbe entre parenthèses dans la forme qui correspond le mieux à chaque espace.</p>\
 								 ",
-			questions: ["Laura verra au cinéma un film qui la _________ (faire ) pleurer. Elle l'a vu plus de dix fois.",
-									"Je veux un livre qui ___________ (contenir) de nombreux personnages fantastiques. Il s'intitule  \"The Neverending Story\".",
+			questions: ["1. Laura verra au cinéma un film qui la _________ (faire ) pleurer. Elle l'a vu plus de dix fois.",
+									"2. Je veux un livre qui ___________ (contenir) de nombreux personnages fantastiques. Il s'intitule  \"The Neverending Story\".",
 									"Nous devons trouver une encyclopédie qui __________ (contenir) tous les tableaux de Picasso. J'ai oublié dans quelle étagère je l’ai mise.",
 									"Je vais chanter une chanson qui te __________ (rendre ) heureux. J'espère être capable de la composer.",
 									"Nous avons besoin d'un directeur qui __________ (convenir) le mieux à l'entreprise, mais je pense qu' aucun des candidats n'est bon pour diriger.",

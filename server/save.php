@@ -42,7 +42,7 @@ if(isset($_POST['mode']) && $_POST['mode'] == 'tmp'){
   }else{
     $folder .= $_POST['folder'];
     if(!file_exists($folder)) mkdir($folder);
-    $ID = $filename = $_POST['filename'];
+    $ID = $filename = !empty($_POST['filename']) ? $_POST['filename'] : getUniqueID();
   }
 
 
