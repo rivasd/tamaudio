@@ -217,7 +217,7 @@ function runExperiment(){
 
 		timeline.push({
 			type: "survey-text",
-			preamble: "<h3>2/3</h3><p>Dans ce test, vous trouverez des paires de phrases dont la première contient un espace qui indique qu'un verbe a été supprimé. Premièrement, lisez la paire de phrases en entier afin de bien la comprendre. Ensuite, veuillez remplir chaque espace en conjuguant le verbe entre parenthèses dans la forme qui correspond le mieux à chaque espace.</p>\
+			preamble: "<h3>2/3</h3>\
 								 ",
 			questions: [
 									"Je veux une laveuse qui _______________ (dire) la température. On la vend sur Amazon à bon prix. ",
@@ -242,7 +242,7 @@ function runExperiment(){
 
 		timeline.push({
 			type: "survey-text",
-			preamble: "<h3>3/3</h3><p>Dans ce test, vous trouverez des paires de phrases dont la première contient un espace qui indique qu'un verbe a été supprimé. Premièrement, lisez la paire de phrases en entier afin de bien la comprendre. Ensuite, veuillez remplir chaque espace en conjuguant le verbe entre parenthèses dans la forme qui correspond le mieux à chaque espace.</p>\
+			preamble: "<h3>3/3</h3>\
 								 ",
 			questions: [
 									"Nous cherchons un restaurant qui  __________ (être) pas très cher. On m'a dit qu'ils'appelle \"El Marino\".",
