@@ -124,7 +124,7 @@ function runExperiment(){
 			type: "form",
 			schema: {
 				form: {form_title : "TAM en français", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: 'Si vous avez déjà un code, veuillez le saisir ici, sinon continuer en laissant cet espace vide.', use_data_key: true},
-				"code" :  {type: "text", label: "Código", needQuestion:false, floating:true, value:""},
+				"code" :  {type: "text", label: "Code", needQuestion:false, floating:true, value:""},
 				onSubmit: {label: "Continuer", onclick: function(){
 					//console.log(jsPsych.currentTimelineNodeID());
 				}},
