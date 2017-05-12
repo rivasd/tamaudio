@@ -4,8 +4,6 @@ if(!file_exists($folder)) mkdir($folder);
 //Code list
 $codeFile = "../data/codes.json";
 
-
-
 function getUniqueID(){
   if(isset($_POST['group']) && $_POST['group']) $prefix = $_POST['group'];
   else $prefix = 'NA';
@@ -19,9 +17,6 @@ function getUniqueID(){
   } while(array_search($prefix.''.str_pad($index, 2, '0', STR_PAD_LEFT), $codeJSON->codes) !== FALSE);
   return $prefix.''.str_pad($index, 2, '0', STR_PAD_LEFT);
 }
-
-
-
 
 
 //Saving temp files during the task.
