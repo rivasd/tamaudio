@@ -107,8 +107,7 @@ function runExperiment(){
 					<div class=\"mdl-cell mdl-cell--12-col\">\
 						<p>Merci de vouloir participer à notre expérience. Avant de continuer, veuillez lire attentivement ce qui suit :</p>\
 						<ul>\
-					  <li>Avant de commencer l'expérience, vous devez donner votre consentement en cliquant sur « Je consens » au bas de la page suivante.</li>\
-					  <li>Afin de faire cette tâche, vous ne devez avoir aucune connaissance de l'espagnol.</li>\
+					  <li>Avant de commencer l'expérience, si vous n'avez pas donné votre consentement lors d'un test précédent, vous devrez le donner en cliquant sur « Je consens » d'une des pages suivantes.</li>\
 						<li>Vous devez effectuer cette expérience sur un <strong>ordinateur</strong> et non sur un téléphone portable, vous aurez à utiliser votre clavier.</li>\
 						</ul>\
 						<p>Maintenant, appuyez sur une touche pour continuer.</p>\
