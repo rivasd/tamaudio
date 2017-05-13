@@ -169,7 +169,7 @@ function runExperiment(){
 				"origin_father" :  {type: "text", label: " ", question:"Pays d'origine et langue maternelle de votre père", required: true, errorInfo:"* Réponse obligatoire"},
 				"mother_tongue" :  {type: "text", label: " ", question:"Quelle est votre langue maternelle", required: true, errorInfo:"* Réponse obligatoire"},
 				"other_languages" :  {type: "text", label: " ", question:"Quelles autres langues parlez vous et à quel niveau?", required: true, errorInfo:"* Réponse obligatoire"},
-				"other_languages" :  {type: "textarea", placeholder: "Par exemple : <br />\n L2: Anglais, niveau avancé. <br />\nL3: Japonais, niveau débutant", question: "Quelle autres langues parlez vous et à quel niveau?", required: true, errorInfo:"* Réponse obligatoire (vous pouvez écrire <em>aucune</em>)", cols:60},
+				"other_languages" :  {type: "textarea", placeholder: "Par exemple : <br />\n L2: Anglais, niveau avancé. <br />\nL3: Japonais, niveau débutant", question: "Quelles autres langues parlez vous et à quel niveau?", required: true, errorInfo:"* Réponse obligatoire (vous pouvez écrire <em>aucune</em>)", cols:60},
 				onSubmit: {label: "Continuer", onclick: function(){}}
 			}
 		});
