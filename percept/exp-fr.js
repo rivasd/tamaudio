@@ -157,17 +157,17 @@ function runExperiment(){
 		background_questions.timeline.push({
 			type: "form",
 			schema: {
-				form: {form_title : "Cuestionario", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: ' '},
+				form: {form_title : "Questionnaire sur votre profil linguistique", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: ' '},
 				"name" :  {type: "text", label: " ", question: "Nom", required: true, errorInfo:"* Réponse obligatoire"},
 				"email" :  {type: "email", label: " ", question: "Courriel", required: true, errorInfo:"* Courriel valide obligatoire"},
 				"sex" :  {type: "radio", labels: ["Masculin", "Féminin"], question:"Sexe", required: true, errorInfo:"* Réponse obligatoire"},
 				"birth_date" :  {type: "date", label:' ', question: "Date de naissance", required: true, errorInfo:"* Réponse obligatoire"},
 				"birth_place" :  {type: "text", label:" ", question: "Lieu de naissance", required: true, errorInfo:"* Réponse obligatoire"},
-				"school_level" :  {type: "text", label: "Secondaire, cégep, bacc., maitrise, etc.", question: "Niveau de scolarité", required: true, errorInfo:"* Réponse obligatoire"},
-				"school_language" :  {type: "text", label: " ", question:"Langue principale d'enseignment", required: true, errorInfo:"* Réponse obligatoire"},
 				"origin_mother" :  {type: "text", label: " ", question:"Pays d'origine et langue maternelle de votre mère", required: true, errorInfo:"* Réponse obligatoire"},
 				"origin_father" :  {type: "text", label: " ", question:"Pays d'origine et langue maternelle de votre père", required: true, errorInfo:"* Réponse obligatoire"},
 				"mother_tongue" :  {type: "text", label: " ", question:"Quelle est votre langue maternelle", required: true, errorInfo:"* Réponse obligatoire"},
+				"school_level" :  {type: "text", label: "Secondaire, cégep, bacc., maitrise, etc.", question: "Niveau de scolarité", required: true, errorInfo:"* Réponse obligatoire"},
+				"school_language" :  {type: "text", label: " ", question:"Langue principale d'enseignment", required: true, errorInfo:"* Réponse obligatoire"},
 				"other_languages" :  {type: "text", label: " ", question:"Quelles autres langues parlez vous et à quel niveau?", required: true, errorInfo:"* Réponse obligatoire"},
 				"other_languages" :  {type: "textarea", placeholder: "Par exemple : <br />\n L2: Anglais, niveau avancé. <br />\nL3: Japonais, niveau débutant", question: "Quelles autres langues parlez vous et à quel niveau?", required: true, errorInfo:"* Réponse obligatoire (vous pouvez écrire <em>aucune</em>)", cols:60},
 				onSubmit: {label: "Continuer", onclick: function(){}}
