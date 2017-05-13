@@ -204,7 +204,7 @@ function runExperiment(){
 				form: {form_title : "TAM audio", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: 'Si ya se te ha asignado un código, escríbelo aquí y continúa. Si no lo tienes, solo presiona continuar.', use_data_key: true},
 				"code" :  {type: "text", label: "Código", needQuestion:false, floating:true, value:""},
 				onSubmit: {label: "Continuar", onclick: function(){
-					console.log(jsPsych.currentTimelineNodeID());
+					//console.log(jsPsych.currentTimelineNodeID());
 				}},
 			}
 		});
