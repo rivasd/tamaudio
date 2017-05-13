@@ -46,7 +46,8 @@ function runExperiment(){
 		var userCodes = [];
 
 		//Load user codes
-		$.getJSON( 'data/codes.json', function(data){
+		$.get( 'server/json.php?file=codes.json', function(encrypted){
+			data = JSON.parse(JSON.parse(CryptoJS.AES.decrypt(encrypted, "dfakjh0!@@1@876657*&?*%&93rjioasdf", {format: CryptoJSAesJson}).toString(CryptoJS.enc.Utf8)));
 			userCodes = data.codes;
 		})
 
