@@ -44,11 +44,19 @@ function runExperiment(){
 		var currentLevel;
 		var uuid = guid();
 		var userCodes = [];
+		var resumeCodes;
 
 		//Load user codes
 		$.get( 'server/json.php?file=codes.json', function(encrypted){
 			data = JSON.parse(JSON.parse(CryptoJS.AES.decrypt(encrypted, "dfakjh0!@@1@876657*&?*%&93rjioasdf", {format: CryptoJSAesJson}).toString(CryptoJS.enc.Utf8)));
 			userCodes = data.codes;
+		})
+
+		//Load user codes
+		$.get( 'server/json.php?file=resume_codes.json', function(encrypted){
+			data = JSON.parse(JSON.parse(CryptoJS.AES.decrypt(encrypted, "dfakjh0!@@1@876657*&?*%&93rjioasdf", {format: CryptoJSAesJson}).toString(CryptoJS.enc.Utf8)));
+			resumeCodes = data.codes;
+			console.log(resumeCodes);
 		})
 
 		function guid() {
@@ -135,7 +143,6 @@ function runExperiment(){
 		function validate_code(customCode){
 				//This is the first node
 				var data = jsPsych.data.getDataByTimelineNode("0.0-2.0").first().values()[0];
-				var level_mchoice = jsPsych.data.getDataByTimelineNode("0.0-5.0-0.0").first().values()[0];
 				var currentCode = data.code ? data.code.toUpperCase().trim() : '';
 				var valid = false;
 				//validate code
@@ -157,6 +164,26 @@ function runExperiment(){
 				return !valid
 		}
 
+		function validate_resume_code(test_item){
+			//This is the first node
+			var data = jsPsych.data.getDataByTimelineNode("0.0-2.0").first().values()[0];
+			var currentCode = data.code ? data.code.toUpperCase().trim() : '';
+			if(!currentCode || !resumeCodes[currentCode]){
+				//invalid code
+				valid = false;
+			}else{
+				if(test_item){
+					if(test_item < resumeCodes[currentCode])valid = true;
+					else valid = false;
+				}else {
+					valid = true;
+				}
+
+			}
+			return !valid;
+
+		}
+
     /* create experiment timeline array */
     var timeline = [];
 
@@ -170,6 +197,7 @@ function runExperiment(){
 					  <li>Avant de commencer l'expérience, vous devez donner votre consentement en cliquant sur « Je consens » au bas de la page suivante.</li>\
 					  <li>Le formulaire de consentement est en français, mais le reste de l'expérience se déroulera en espagnol.</li>\
 						<li>Vous devez effectuer cette expérience sur un <strong>ordinateur</strong> et non sur un téléphone portable, vous aurez à utiliser votre clavier.</li>\
+						<li>Les navigateurs compatibles avec l'expérience sont Chrome, Firefox et Safari.</li>\
 						</ul>\
 						<p>Maintenant, appuyez sur une touche pour continuer.</p>\
 						</div>\
@@ -180,6 +208,7 @@ function runExperiment(){
 					  <li>Antes de comenzar el experimento, necesitamos su consentimiento. Para ello, tiene que hacer clic sobre el botón \"Je consens\" abajo de la página siguiente.</li>\
 					  <li>El formulario de consentimiento está en francés, pero todo el resto de la prueba se hará en español.</li>\
 						<li>Para hacer la prueba, se debe utilizar un <strong>ordenador</strong> y no un móvil.</li>\
+						<li>Los navegadores compatibles con el experimento son Chrome, Firefox y Safari.</li>\
 						</ul>\
 						<p>Ahora, presione cualquier tecla para continuar.</p>\
 						</div>\
@@ -205,6 +234,14 @@ function runExperiment(){
 				"code" :  {type: "text", label: "Código", needQuestion:false, floating:true, value:""},
 				onSubmit: {label: "Continuar", onclick: function(){
 					//console.log(jsPsych.currentTimelineNodeID());
+
+					$(window).bind('beforeunload', function(e){
+						var confirmationMessage = 'Vous n\'avez pas terminé! '
+                            + 'Si vous quittez maintenant vos données ne seront pas enregistrés.';
+
+				    (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+				    return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+					});
 				}},
 			}
 		});
@@ -531,7 +568,9 @@ function runExperiment(){
 						"<p>Estás a punto de empezar el experimento.</p>" +
 						"<p>Necesitarás oír frases, asegúrate de que tienes audífonos o altavoces conectados.</p>" +
             "<p>Presiona cualquier tecla para continuar.</p>",
-	    }], conditional_function: function(){return validate_code(['SKIP_TO_END', 'SKIP_PRACTICE'])}
+	    }], conditional_function: function(){
+				return (validate_code(['SKIP_TO_END', 'SKIP_PRACTICE']) && validate_resume_code(false))
+			}
 		};
     timeline.push(welcome_block);
 
@@ -554,7 +593,7 @@ function runExperiment(){
 						"<p>Ahora presiona cualquier tecla para continuar.</p> " +
             "",
       timing_post_trial: 0,
-			}], conditional_function: function(){return validate_code(['SKIP_TO_END', 'SKIP_PRACTICE'])}
+		}], conditional_function: function(){return (validate_code(['SKIP_TO_END', 'SKIP_PRACTICE']) && validate_resume_code(false))}
     };
 
     timeline.push(instructions_block);
@@ -669,7 +708,7 @@ function runExperiment(){
 	          }
 	        }],
 	        choices: [13],
-					conditional_function: function(){return validate_code(['SKIP_TO_END', 'SKIP_PRACTICE'])}
+					conditional_function: function(){return (validate_code(['SKIP_TO_END', 'SKIP_PRACTICE']) && validate_resume_code(false))}
 				};
 
 	      timeline.push(practice_block);
@@ -684,7 +723,7 @@ function runExperiment(){
 						"<p>Presiona cualquier tecla para continuar.</p>",
 
 		    }],
-				conditional_function: function(){return validate_code(['SKIP_TO_END', 'SKIP_PRACTICE'])}
+				conditional_function: function(){return (validate_code(['SKIP_TO_END', 'SKIP_PRACTICE']) && validate_resume_code(false))}
 			};
 
 		timeline.push(get_ready_block);
@@ -971,7 +1010,7 @@ function runExperiment(){
               correct = true;
             }
             jsPsych.data.addDataToLastTrial({correct: correct, likert: jQuery.parseJSON( data.responses ).Q0});
-          },
+          }
         },
         {
           timeline : [
@@ -1006,7 +1045,9 @@ function runExperiment(){
           }
         }],
         choices: [13],
-				conditional_function: function(){return validate_code(['SKIP_TO_END'])},
+				conditional_function: function(){
+					console.log(this);
+					return (validate_code(['SKIP_TO_END']) && validate_resume_code(this.timeline[2].trial().data.item_id))},
 				on_finish : function(){
 					Percept.saveTemp({uuid:uuid, group:currentGroup, level:currentLevel});
 				}
@@ -1034,6 +1075,8 @@ function runExperiment(){
 					group:currentGroup,
 					level:currentLevel
 				})
+
+				$(window).unbind('beforeunload');
 			},
 			display_element: 'jsPsychTarget',
 			on_trial_start:function(){
