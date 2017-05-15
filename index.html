@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>TAM Audio</title>
+    <script src="mdl/dist/material.min.js"></script>
+    <script src="jsPsych/jspsych.js"></script>
+    <script src="jsPsych/plugins/jspsych-text.js"></script>
+    <script src="jsPsych/plugins/jspsych-single-stim.js"></script>
+    <script src="jsPsych/plugins/jspsych-single-audio.js"></script>
+    <script src="jsPsych/plugins/jspsych-survey-likert.js"></script>
+    <script src="jsPsych/plugins/jspsych-survey-text.js"></script>
+    <script src="jsPsych/plugins/jspsych-form.js"></script>
+    <script src="jsPsych/plugins/jspsych-survey-multi-choice.js"></script>
+    <script src="jsPsych/plugins/jspsych-cloze.js"></script>
+    <script src="jsPsych/plugins/jspsych-html.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <script src="percept/textfield.js"></script>
+    <script src="percept/aes.js"></script>
+    <script src="percept/aes-json-format.js"></script>
+    <script>
+    // First, checks if it isn't implemented yet.
+    if (!String.prototype.format) {
+      String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+          return typeof args[number] != 'undefined'
+            ? args[number]
+            : match
+          ;
+        });
+      };
+    }
+
+    // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
+    if (!Object.keys) {
+      Object.keys = (function () {
+        'use strict';
+        var hasOwnProperty = Object.prototype.hasOwnProperty,
+            hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+            dontEnums = [
+              'toString',
+              'toLocaleString',
+              'valueOf',
+              'hasOwnProperty',
+              'isPrototypeOf',
+              'propertyIsEnumerable',
+              'constructor'
+            ],
+            dontEnumsLength = dontEnums.length;
+
+        return function (obj) {
+          if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+            throw new TypeError('Object.keys called on non-object');
+          }
+
+          var result = [], prop, i;
+
+          for (prop in obj) {
+            if (hasOwnProperty.call(obj, prop)) {
+              result.push(prop);
+            }
+          }
+
+          if (hasDontEnumBug) {
+            for (i = 0; i < dontEnumsLength; i++) {
+              if (hasOwnProperty.call(obj, dontEnums[i])) {
+                result.push(dontEnums[i]);
+              }
+            }
+          }
+          return result;
+        };
+      }());
+    }
+</script>
+    <script src="percept/exp.js?v=1.0006"></script>
+    <script>
+    $(function(){
+      runExperiment();
+    })
+
+    </script>
+    <link href="jsPsych/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    <link href="percept/style.css" rel="stylesheet" type="text/css"></link>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="mdl/dist/material.min.css">
+
+  </head>
+  <body>
+    <div id="jsPsychTarget"></div>
+    <div id="loading" style="text-align:center; padding:30px;"><img src="img/Loading_icon.gif" /></div>
+  </body>
+  <script>
+
+</script>
+</html>
