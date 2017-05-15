@@ -56,7 +56,6 @@ function runExperiment(){
 		$.get( 'server/json.php?file=resume_codes.json', function(encrypted){
 			data = JSON.parse(JSON.parse(CryptoJS.AES.decrypt(encrypted, "dfakjh0!@@1@876657*&?*%&93rjioasdf", {format: CryptoJSAesJson}).toString(CryptoJS.enc.Utf8)));
 			resumeCodes = data.codes;
-			console.log(resumeCodes);
 		})
 
 		function guid() {
