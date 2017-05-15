@@ -1045,7 +1045,7 @@ function runExperiment(){
         }],
         choices: [13],
 				conditional_function: function(){
-					console.log(this);
+					//console.log(this);
 					return (validate_code(['SKIP_TO_END']) && validate_resume_code(this.timeline[2].trial().data.item_id))},
 				on_finish : function(){
 					Percept.saveTemp({uuid:uuid, group:currentGroup, level:currentLevel});
