@@ -1066,7 +1066,7 @@ function runExperiment(){
 				//data = data.getDataAsCSV([{trial_type: 'form'}, {trial_type: 'survey-multi-choice'}, {trial_type: 'cloze'}, {trial_type: 'survey-likert'}, {trial_type: 'survey-text'}]);
 				var display_element = jsPsych.getDisplayElement();
 
-				display_element.innerHTML = jsPsych.pluginAPI.getMDLLayout('<h3>{0}</h3><p>{1}</p>'.format('Fin del experimento', 'Ya has terminado. ¡Muchas gracias por tu participación!'));
+				display_element.innerHTML = jsPsych.pluginAPI.getMDLLayout('<h3>{0}</h3><p>{1}</p>'.format('Fin del experimento', '<p>Ya has terminado. ¡Muchas gracias por tu participación!</p><p> Una vez validado su cuestionario, le enviaremos su tarjeta de 10$ (dentro de un plazo de 24 a 48 horas). Si tiene alguna pregunta, no dude en contactar con <a href="hugues.lacroix@umontreal.ca">hugues.lacroix@umontreal.ca</a></p>'));
 
 				Percept.save({
 					uuid:uuid,

@@ -122,7 +122,7 @@ function runExperiment(){
 		timeline.push({
 			type: "form",
 			schema: {
-				form: {form_title : "TAM en français", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: 'Si vous avez déjà un code, veuillez le saisir ici, sinon continuer en laissant cet espace vide.', use_data_key: true},
+				form: {form_title : "TAM en français", layout_color: "grey-200", content_bg_color: "grey-100", ribbon_bg: "img/ribbon.jpg",	form_description: 'Si vous avez déjà un code, veuillez le saisir ici, sinon vous pouvez continuer en laissant cet espace vide.', use_data_key: true},
 				"code" :  {type: "text", label: "Code", needQuestion:false, floating:true, value:""},
 				onSubmit: {label: "Continuer", onclick: function(){
 					//console.log(jsPsych.currentTimelineNodeID());
@@ -132,7 +132,7 @@ function runExperiment(){
 
 		timeline.push({timeline: [{
 			type: "html",
-			url: prefix + "../consentement.html",
+			url: prefix + "../consentement-fr.html",
 			mdl_layout: true,
 			cont_btn:"consent",
 			on_finish:function(){
